@@ -1,0 +1,155 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ page_membername }}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+        <style>
+            header {
+                font-family: 'Open Sans', sans-serif;
+                background-color: {{ page_color }};
+                display: flex;
+                padding-left: 20px;
+                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+            } 
+            .unvisible {
+                display: none;
+            }
+        </style>
+    </head>
+
+<body>
+    <header>
+        <h1>
+        [{{ Nr_id }}]
+        &nbsp;
+        {{ page_membername }}
+        &nbsp;
+        (Summe: {{ page_sum }} €)
+        </h1>
+    </header>
+
+<form onsubmit="eingabe_return(); return false;">
+    &nbsp;&nbsp;
+    <label for="artikel_manual">Artikel</label>
+    <input type="text" id="artikel_manual" name="textfeld" maxlength="200">
+    &nbsp;&nbsp;&nbsp;
+    <label for="stk_kg_manual">Menge in kg/Stk:</label>
+    <input type="number" id="stk_kg_manual" name="stk_kg" step="0.001" min="0" required>
+    &nbsp;&nbsp;&nbsp;
+    <label for="preis_manual">Preis in €:</label>
+    <input type="number" id="preis_manual" name="stk_kg" step="0.01" min="-100" required>
+
+    <input type="submit" class="unvisible">
+</form>
+
+    &nbsp;&nbsp;&nbsp;
+
+    <button onclick="hinzufuegen()">Hinzufügen</button>
+    <button onclick="loeschen()">Löschen</button>
+    <button onclick="Summe()">Summe</button>
+    <br>
+
+    <table id="einkaufsliste">
+        <thead>
+            <tr>
+                <th>Nr.</th>
+                <th>Datum</th>
+                <th>Name</th>
+                <th>Menge [kg/Stk]</th>
+                <th>Einzelpreis [€]</th>
+                <th>Gesamtpreis [€]</th>
+        </thead>
+
+        {% for row in all_items %}
+
+            <tbody>
+                <tr>
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.created_at }}</td>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.amount }}</td>
+                    <td>{{ row.price }}</td>
+                    <td>{{ row.calculate_total }}</td>
+                </tr>
+            </tbody>
+        
+        {% endfor %}
+
+    </table>
+
+    <script src="{% static 'scripts/functions.js' %}"></script>
+
+    <script>
+        let token = '{{ csrf_token }}';
+
+        function delay_reload(time) {
+            setTimeout(function() {
+                location.reload();
+            }, time);
+        }
+
+        function hinzufuegen() {
+            addItemManually2({{ Nr_id }});
+            setTimeout(function() {
+                sum({{ Nr_id }});
+            }, 1000);
+            delay_reload(1000)
+        }
+
+        function loeschen() {
+            deleteItem({{ Nr_id }})
+            setTimeout(function() {
+                sum({{ Nr_id }});
+            }, 1000);
+            delay_reload(1000)
+        }
+
+        function eingabe_return() {
+            addItemManually2({{ Nr_id }});
+            setTimeout(function() {
+                sum({{ Nr_id }});
+            }, 1000);
+            delay_reload(1000)
+        }
+
+        function Summe() {
+            sum({{ Nr_id }});
+            setTimeout(location.reload(), 400);
+        }
+
+        function getFormattedDate() {
+            var now = new Date();
+            var year = now.getFullYear().toString().substr(-2); // Letzte zwei Ziffern des Jahres
+            var month = ('0' + (now.getMonth() + 1)).slice(-2); // Führende Null für Monat
+            var day = ('0' + now.getDate()).slice(-2); // Führende Null für Tag
+
+            return year + month + day + '_';
+        }
+
+        function displayDateStamp() {
+            var dateStamp = getFormattedDate();
+            var membername = '{{ page_membername }}';
+
+            // Setze den Datumsstempel und Mitgliedsname im <title>-Element
+            document.title = dateStamp + membername;
+        }
+
+    </script>
+
+</body>
+
+<body onload="displayDateStamp()">
+    <p><span id="dateStamp"></span></p>
+</body>
+
+</html>

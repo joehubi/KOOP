@@ -1,0 +1,60 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preisliste - Alle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        header {
+            background-color: rgb(160, 167, 150);
+            display: flex;
+            padding-left: 20px;
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Preisliste - Alle</h1>
+    </header>
+    
+    <table id="einkaufsliste">
+        <thead>
+            <tr>
+                <th></th>
+                <th>ID</th>
+                <th>Kategorie</th>
+                <th>Name</th>
+                <th>Preis</th>
+                <th>Typ</th>
+        </thead>
+
+        {% for row in all_items %}
+
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.category }}</td>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.price }}</td>
+                    <td>{{ row.type }}</td>
+                </tr>
+            </tbody>
+        
+        {% endfor %}
+
+
+</body>
+
+</html>

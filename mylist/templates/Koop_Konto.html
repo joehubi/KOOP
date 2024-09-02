@@ -1,0 +1,158 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Konto</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+        <style>
+            header {
+                font-family: 'Open Sans', sans-serif;
+                background-color: #ffffff;
+                display: flex;
+                padding-left: 20px;
+                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+            } 
+        </style>
+    </head>
+
+<body>
+    <header>
+        <h1> Aktueller Kontostand: </h1>
+        <h1> &nbsp; </h1>
+        <h1 style="color: {% if all_saves.0.sum_save < 0 %}red{% else %}black{% endif %};">
+           {{ all_saves.0.sum_save|floatformat:2 }} €
+        </h1>
+    </header>
+
+    <form>
+        <label for="namenListe">Konto auswählen</label>
+        <select id="namenListe" name="namenListe" onchange="meineFunktion()">
+            {% for row in memberdaten %}
+                <option value="{{ row.id }}">{{ row.name }}</option>
+            {% endfor %}
+        </select>    
+    </form>
+
+    <table id="einkaufsliste">
+        <thead>
+            <tr>
+                <th>Nr.</th>
+                <th>Datum</th>
+                <th>Nr</th>
+                <th>Name</th>
+                <th>Betrag</th>
+                <th>Kommentar</th>
+                <th>Kommentar 2</th>
+        </thead>
+
+        {% for row in all_items %}
+
+            <tbody>
+                <tr>
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.created_at }}</td>
+                    <td>{{ row.nr }}</td>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.cashflow }}</td>
+                    <td>{{ row.comment }}</td>
+                    <td>{{ row.comment2 }}</td>
+                </tr>
+            </tbody>
+        
+        {% endfor %}
+
+    </table>
+
+    <script src="{% static 'scripts/functions.js' %}"></script>
+
+    <script>
+
+        let token = '{{ csrf_token }}';
+
+        function delay_reload(time) {
+            setTimeout(function() {
+                location.reload();
+            }, time);
+        }
+
+        function meineFunktion() {
+            var selectedIndex = document.getElementById("namenListe").selectedIndex;
+            var ausgewaehlterText = document.getElementById("namenListe").options[selectedIndex].text;
+            //alert(ausgewaehlterText);
+
+            // JavaScript-Code, um die ausgewählte Nummer anzuzeigen
+            var dropdown = document.getElementById("namenListe");
+
+            addy(dropdown.value - 1)
+            delay_reload(1000)           
+        }
+
+        function addy(nameNr) {
+        
+            let formData = new FormData();
+            formData.append('nameNr', nameNr);       
+            formData.append('csrfmiddlewaretoken', token);
+
+            fetch(('/Konto/add/'),{
+                method: 'POST',
+                body: formData
+            });
+        }
+
+        function KontoAdd() {
+            let nameNr = dropdown.value
+            if (nameNr === null || nameNr < 1) {
+                return;
+            }  
+
+            var selectElement = document.getElementById("namenListe");
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+            var selectedText = selectedOption.text;
+            let itemName = selectedText
+            if (itemName === null) {
+                return;
+            }
+            let itemAmount = prompt('Betrag [€]')
+            if (itemAmount === null) {
+                return;
+            } 
+
+            // Das Input-Element anhand seiner ID abrufen
+            var inputElement = document.getElementById("comment");
+            // Den Textwert aus dem Input-Element abrufen
+            var textValue = inputElement.value;
+            let itemComment = textValue;
+
+            let formData = new FormData();
+            formData.append('itemName', itemName);
+            formData.append('itemAmount', itemAmount); 
+            formData.append('itemNr', nameNr);
+            formData.append('itemComment', itemComment);             
+            formData.append('csrfmiddlewaretoken', token);
+
+            fetch(('/Konto/add2/'),{
+                method: 'POST',
+                body: formData
+            });
+        }
+
+    </script>
+
+</body>
+</html>
+
+<!--
+
+-->
+
+<!--
+
+-->

@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Bestellungen</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+        <style>
+            header {
+                font-family: 'Open Sans', sans-serif;
+                background-color: #ffffff;
+                display: flex;
+                padding-left: 20px;
+                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+            } 
+        </style>
+    </head>
+
+<body>
+    <header>
+        <h1> Bestellungen: </h1>
+        <h1> &nbsp; </h1>
+    </header>
+
+    &nbsp;&nbsp;&nbsp;
+
+    <button onclick="ReadPDF()">Rechnung einlesen</button>
+
+    <script src="{% static 'scripts/functions.js' %}"></script>
+
+    <script>
+
+        let token = '{{ csrf_token }}';
+
+        function delay_reload(time) {
+            setTimeout(function() {
+                location.reload();
+            }, time);
+        }
+
+        function ReadPDF() {
+
+            let formData = new FormData();
+            formData.append('csrfmiddlewaretoken', token);
+
+            fetch("/Order/add/",{
+                method: 'POST',
+                body: formData
+            });
+        }
+
+    </script>
+
+</body>
+</html>
+
+<!--
+
+-->
+
+<!--
+
+-->
