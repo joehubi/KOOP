@@ -37,7 +37,3 @@ python manage.py migrate
 
 # DELETE FROM mylist_person1;
 # DELETE FROM sqlite_sequence WHERE name='mylist_person1';
-
-# ToDo's
-#
-# - 
