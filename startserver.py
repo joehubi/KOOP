@@ -2,7 +2,7 @@ import os
 import subprocess
 
 # Setze den Pfad zur Django-Projektverzeichnis
-project_directory = r'C:\Users\User\PycharmProjects\KOOP'
+project_directory = r'C:\Dev\Koop2\'
 
 # Aktiviere die virtuelle Python-Umgebung
 activate_script = os.path.join(project_directory, 'env', 'Scripts', 'activate')
