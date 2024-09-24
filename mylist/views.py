@@ -26,7 +26,6 @@ from .models import Konto
 from .models import Save
 # endregion
 
-# Create your views here.
 # region ###################### Testing
 def Testing_add(request):
     if request.method == 'POST':
