@@ -1,9 +1,10 @@
+# region ###################### IMPORT
 from django.db import models
-from datetime import datetime 
+#from datetime import datetime 
+# endregion
 
-# Create your models here.
-
-# Preisliste
+# region ###################### Preisliste
+# Modell für die Preislisten. Wird noch nicht aktiv verwendet
 
 class PriceList(models.Model):
     name = models.CharField(max_length=200)
@@ -13,8 +14,11 @@ class PriceList(models.Model):
 
     def __str__(self):
         return str(self.id) + ' - ' + self.name + ' - ' + str(self.price) + ' - ' + self.type + ' - ' + self.category
+# endregion
 
-# Konto
+# region ###################### Konto
+# Definiert einen Konto-Eintrag.
+# Die Namensliste zur Bearbeitung in der ADMIN-Ansicht ist hier lokal definiert. Das ist noch ein nachteil im Code.
 
 class Konto(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -53,18 +57,21 @@ class Konto(models.Model):
 
     def __str__(self):
         return str(self.id) + ' - ' + str(self.created_at) + ' - ' + str(self.nr) + ' (Nr-Name)' + ' - ' + str(self.cashflow) + ' - ' + self.comment + ' - ' + self.comment2
+# endregion
 
-# Save
-
+# region ###################### Save
+# Definiert eine Zwischenablage zur Speicherung der SUMMEN
 class Save(models.Model):
     nr_save = models.IntegerField(default=0)
     sum_save = models.FloatField(default=0)
 
     def __str__(self):
         return str(self.id) + ' - ' + str(self.nr_save) + ' - ' + str(self.sum_save)
+# endregion
 
-# Member Liste
-
+# region ###################### Member Liste
+# Definiert wie ein Member-Eintrag auszusehen hat.
+# Empfehlung color: Google Color picker
 class Members(models.Model):
     name = models.CharField(max_length=200)
     color = models.CharField(max_length=10)
@@ -72,15 +79,16 @@ class Members(models.Model):
 
     def __str__(self):
         return str(self.id) + ' - ' + self.name + ' - ' + self.color + ' - ' + str(self.sum)
+# endregion 
 
-# class Person
-
+# region ###################### Person/Einkauf
+# Definiert wie eine Person einkaufen kann.
 class Person(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    name = models.CharField(max_length=200)
-    amount = models.FloatField(default=0)
-    price = models.FloatField(default=0)
-    done = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)    # Zeitstempel
+    name = models.CharField(max_length=200)     # Name des Produktes/Artikels
+    amount = models.FloatField(default=0)       # Menge in Stk oder kg
+    price = models.FloatField(default=0)        # Preis in €
+    done = models.BooleanField(default=False)   # Wird zur Abrechnung (Finanzdienst) verwendet. 0=nicht gebucht, 1=gebucht auf Konto (wird nicht mehr in der aktuellen Liste dargestellt)
 
     def __str__(self):
         return str(self.done) + ' - ' + str(self.id) + ' - ' + str(self.created_at) + ' - ' + self.name
@@ -91,7 +99,10 @@ class Person(models.Model):
 
     class Meta:
         abstract = True
+# endregion
 
+# region ###################### Members
+# region ###################### DB MANIPULATION
 
 # Datenbank Konfiguration
 # Damit der nachfolgende Code funktional wird und es zu keinen Fehlern bei makemigrations/migrate kommt, muss die 
@@ -120,6 +131,7 @@ class Person(models.Model):
 # name15 = _members()
 
 # Am Anfang bei Einrichtung der Datenbank/Django auskommentieren
+# Das ist leider notwendig, da dieser Code zu einem Fehler führt, solange die DB nicht vorhanden ist.
 name1 = Members.objects.get(id=1+1)
 name2 = Members.objects.get(id=2+1)
 name3 = Members.objects.get(id=3+1)
@@ -135,9 +147,10 @@ name12 = Members.objects.get(id=12+1)
 name13 = Members.objects.get(id=13+1)
 name14 = Members.objects.get(id=14+1)
 name15 = Members.objects.get(id=15+1)
+# endregion
 
-# Personen
-
+# region ###################### Personen/Members
+# Definiert die personen-Tabellen in der DB. Jede Person hat eine Tabelle.
 class Person1(Person):
     class Meta:
         db_table = 'mylist_person1'
@@ -227,50 +240,6 @@ class Person15(Person):
         db_table = 'mylist_person15'
         verbose_name = f'[15] {name15.name}'
         verbose_name_plural =  f'[15] {name15.name}'
-      
 
-"""
-# Personen
-
-class Person1(models.Model):
-    created_at = models.DateField(default=date.today)
-    name = models.CharField(max_length=200)
-    amount = models.FloatField(default=0)
-    price = models.FloatField(default=0)
-    done = models.BooleanField(default=False)
-
-    def __str__(self):
-        return str(self.done) + ' - ' + str(self.id) + ' - ' + str(self.created_at) + ' - ' + self.name
-
-class Person2(models.Model):
-    created_at = models.DateField(default=date.today)
-    name = models.CharField(max_length=200)
-    amount = models.FloatField(default=0)
-    price = models.FloatField(default=0)
-    done = models.BooleanField(default=False)
-
-    def __str__(self):
-        return str(self.done) + ' - ' + str(self.id) + ' - ' + str(self.created_at) + ' - ' + self.name
-
-class Person3(models.Model):
-    created_at = models.DateField(default=date.today)
-    name = models.CharField(max_length=200)
-    amount = models.FloatField(default=0)
-    price = models.FloatField(default=0)
-    done = models.BooleanField(default=False)
-
-    def __str__(self):
-        return str(self.done) + ' - ' + str(self.id) + ' - ' + str(self.created_at) + ' - ' + self.name
-
-class Person4(models.Model):
-    created_at = models.DateField(default=date.today)
-    name = models.CharField(max_length=200)
-    amount = models.FloatField(default=0)
-    price = models.FloatField(default=0)
-    done = models.BooleanField(default=False)
-
-    def __str__(self):
-        return str(self.done) + ' - ' + str(self.id) + ' - ' + str(self.created_at) + ' - ' + self.name
-
-
-"""
+# endregion
+# endregion
