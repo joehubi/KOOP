@@ -1,39 +1,27 @@
 
-
-# Environment erstellen lassen
-python -m venv env
-
-# Environment aktivieren
-"./env/Scripts/activate"
-
-# Django installieren
-python -m pip install Django
-
-# Projekt "shopping_list" starten 
-# . = im selben Ordner
-django-admin startproject shopping_list .
-
-# Server starten
-python manage.py runserver
-
-# App erstellen (erstellt python files)
-python manage.py startapp mylist
-
-# User im Admin-Bereich anlegen
-python manage.py createsuperuser
-
-# Aus den Models den SQL Code erstellen
-python manage.py makemigrations
-
-# SQL auf der Datenbank ausführen
-python manage.py migrate
-
-# Extensions für VisualCode
-# SQLite + SQLite Viewer installieren
+PreInstallation
+###############
+1. Django installieren:             python -m pip install Django
+2. Projekt "shopping_list" starten  
+        . = im selben Ordner
+        django-admin startproject shopping_list .
+3. App erstellen (erstellt python files)
+        python manage.py startapp mylist
 
 
-# Datenbank löschen (ID's zurücksetzen)
-# Mit dem SQLite Tool
-
-# DELETE FROM mylist_person1;
-# DELETE FROM sqlite_sequence WHERE name='mylist_person1';
+Lokales Repositor erstellen
+###########################
+1. Environment erstellen lassen
+        python -m venv env  
+2. Environment aktivieren
+        "./env/Scripts/activate"
+3. Django installieren
+        pip install Django
+4. Aus den Models den SQL Code erstellen
+        python manage.py makemigrations
+5, SQL auf der Datenbank ausführen
+        python manage.py migrate
+6. User im Admin-Bereich anlegen
+        python manage.py createsuperuser
+7. Server starten
+        python manage.py runserver

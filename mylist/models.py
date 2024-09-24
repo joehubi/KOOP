@@ -92,7 +92,34 @@ class Person(models.Model):
     class Meta:
         abstract = True
 
-#
+
+# Datenbank Konfiguration
+# Damit der nachfolgende Code funktional wird und es zu keinen Fehlern bei makemigrations/migrate kommt, muss die 
+# Datenbank korrekt eingerichtet werden. Damit ist im speziellen gemeint, dass eine Tabelle mylist_members mit
+# mindestens 15 Einträgen vorhanden sein muss.
+
+# Am Anfang bei Einrichtung der Datenbank/Django einkommentieren
+
+# class _members:
+#     name = "..."
+
+# name1 = _members()
+# name2 = _members()
+# name3 = _members()
+# name4 = _members()
+# name5 = _members()
+# name6 = _members()
+# name7 = _members()
+# name8 = _members()
+# name9 = _members()
+# name10 = _members()
+# name11 = _members()
+# name12 = _members()
+# name13 = _members()
+# name14 = _members()
+# name15 = _members()
+
+# Am Anfang bei Einrichtung der Datenbank/Django auskommentieren
 name1 = Members.objects.get(id=1+1)
 name2 = Members.objects.get(id=2+1)
 name3 = Members.objects.get(id=3+1)
