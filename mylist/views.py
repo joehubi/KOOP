@@ -1,3 +1,4 @@
+# region ###################### IMPORT
 from django.shortcuts import render
 from django.db.models import Sum
 
@@ -23,15 +24,10 @@ from .models import PriceList
 from .models import Members
 from .models import Konto
 from .models import Save
-
-"""
-    Models
-"""
+# endregion
 
 # Create your views here.
-
-# Testing #######################################################################################################
-
+# region ###################### Testing
 def Testing_add(request):
     if request.method == 'POST':
         PriceList.objects.create(name = request.POST['itemName'], type = request.POST['itemType'], price = request.POST['itemPrice'])
@@ -39,9 +35,9 @@ def Testing_add(request):
     all_items = PriceList.objects.all()
     return render(request, 'testing.html', {'all_items': all_items})
 
+# endregion
 
-# Konto #######################################################################################################
-
+# region ###################### Konto
 def konto_add(request):
 
     if request.method == 'POST':
@@ -83,9 +79,9 @@ def konto_add2(request):
     ActItems = Konto.objects.all()
     all_Saves = Save.objects.all()
     return render(request, 'Koop_konto.html', {'all_items': ActItems, 'all_saves': all_Saves})
+# endregion
 
-# Bestellungen #######################################################################################################
-
+# region ###################### Bestellungen
 def order_add(request):
 
     if request.method == 'POST':
@@ -128,9 +124,9 @@ def order_add(request):
     ActItems = Konto.objects.all()
     all_Saves = Save.objects.all()
     return render(request, 'Koop_Order.html', {'all_items': ActItems, 'all_saves': all_Saves})
+# endregion
 
-# Preisliste anzeigen #######################################################################################################
-
+# region ###################### Preisliste
 def Koop_view_price_1(request):
     all_items = PriceList.objects.filter(category='Sonstige')
     all_items = all_items.order_by('name')
@@ -155,9 +151,9 @@ def Koop_view_price_5(request):
     all_items = PriceList.objects.all()
     all_items = all_items.order_by('category', 'name')
     return render(request, 'koop_price_5.html', {'all_items': all_items})
+# endregion
 
-# Personen #######################################################################################################
-
+# region ###################### Personen
 def add_person(request, person_id):
     if request.method == 'POST':
         name = request.POST['itemName']
@@ -218,9 +214,9 @@ def sum_person(request, person_id):
         eintrag.save()                                  # Änderungen in Member-Datenbank speichern
 
     return render(request, f'koop_{person_id}.html')
+# endregion
 
-
-# Aufruf der Funktionen
+# region ###################### Aufruf der Funktionen
 
 def get_person_model(person_id):
     # Hier können Sie die Zuordnung zwischen Personen-ID und Datenbankmodell implementieren
@@ -261,7 +257,6 @@ def get_person_model(person_id):
     else:
         # Wenn keine Übereinstimmung gefunden wird, können Sie eine Ausnahme auslösen oder ein Standardmodell zurückgeben
         raise ValueError("Ungültige Personen-ID")
-
 
 # Für jede Person ...
 
@@ -399,114 +394,4 @@ def Person_15_delete(request):
     return delete_person(request, 15)
 def Person_15_sum(request):
     return sum_person(request, 15) 
-
-"""
-ALTER CODE
-
-# Person 1
-
-def Person_1_add(request):
-    if request.method == 'POST':
-        Person1.objects.create(name = request.POST['itemName'], amount = request.POST['itemAmount'], price = request.POST['itemPrice'])
-        printname = request.POST['itemName'] + '---' + request.POST['itemAmount'] + ' kg/Stk ---' + request.POST['itemPrice'] + ' €'
-        print('Hinzufügen (manuell):', printname)
-    all_items = Person1.objects.all() # Anzeige der Datenbank-Daten auf der HTML Seite
-    all_members = Members.objects.all()
-    return render(request, 'koop_1.html', {'all_items': all_items, 'all_members': all_members})
-
-def Person_1_addSmart(request):
-    if request.method == 'POST':
-        entry = PriceList.objects.get(id = request.POST['itemNumber'])
-        print('Hinzufügen (aus Preisliste):',entry)
-        Person1.objects.create(name = entry.name, amount = request.POST['itemAmount'], price = entry.price)
-    return render(request, 'koop_1.html')
-
-def Person_1_delete(request):
-    if request.method == 'POST':
-        what_to_delete = Person1.objects.get(id = request.POST['itemNumber'])
-        print('Lösche:',what_to_delete)
-        what_to_delete.delete()
-    return render(request, 'koop_1.html')
-
-def Person_1_sum(request):
-    if request.method == 'POST':
-        alle_eintraege = Person1.objects.all()
-        gesamte_euro_summe = 0
-        for id in alle_eintraege:
-            gesamte_euro_summe += id.price * id.amount
-            gesamte_euro_summe = round(gesamte_euro_summe, 2)
-        print('Summe:',gesamte_euro_summe)
-    return render(request, 'koop_1.html')
-
-
-# Person 2
-
-def Person_2_add(request):
-    if request.method == 'POST':
-        Person2.objects.create(name = request.POST['itemName'], amount = request.POST['itemAmount'], price = request.POST['itemPrice'])
-        printname = request.POST['itemName'] + '---' + request.POST['itemAmount'] + ' kg/Stk ---' + request.POST['itemPrice'] + ' €'
-        print('Hinzufügen (manuell):', printname)
-    all_items = Person2.objects.all()
-    all_members = Members.objects.all()
-    return render(request, 'koop_2.html', {'all_items': all_items, 'all_members': all_members})
-
-def Person_2_addSmart(request):
-    if request.method == 'POST':
-        entry = PriceList.objects.get(id = request.POST['itemNumber'])
-        print('Hinzufügen (aus Preisliste):',entry)
-        Person2.objects.create(name = entry.name, amount = request.POST['itemAmount'], price = entry.price)
-    return render(request, 'koop_2.html')
-
-def Person_2_delete(request):
-    if request.method == 'POST':
-        what_to_delete = Person2.objects.get(id = request.POST['itemNumber'])
-        print('Lösche:',what_to_delete)
-        what_to_delete.delete()
-    return render(request, 'koop_2.html')
-
-def Person_2_sum(request):
-    if request.method == 'POST':
-        alle_eintraege = Person2.objects.all()
-        gesamte_euro_summe = 0
-        for id in alle_eintraege:
-            gesamte_euro_summe += id.price * id.amount
-            gesamte_euro_summe = round(gesamte_euro_summe, 2)
-        print('Summe:',gesamte_euro_summe)
-    return render(request, 'koop_2.html')    
-
-# Person 3
-
-def Person_3_add(request):
-    if request.method == 'POST':
-        Person3.objects.create(name = request.POST['itemName'], amount = request.POST['itemAmount'], price = request.POST['itemPrice'])
-        printname = request.POST['itemName'] + '---' + request.POST['itemAmount'] + ' kg/Stk ---' + request.POST['itemPrice'] + ' €'
-        print('Hinzufügen (manuell):', printname)
-    all_items = Person3.objects.all()
-    all_members = Members.objects.all()
-    return render(request, 'koop_3.html', {'all_items': all_items, 'all_members': all_members})
-
-def Person_3_addSmart(request):
-    if request.method == 'POST':
-        entry = PriceList.objects.get(id = request.POST['itemNumber'])
-        print('Hinzufügen (aus Preisliste):',entry)
-        Person3.objects.create(name = entry.name, amount = request.POST['itemAmount'], price = entry.price)
-    return render(request, 'koop_3.html')
-
-def Person_3_delete(request):
-    if request.method == 'POST':
-        what_to_delete = Person3.objects.get(id = request.POST['itemNumber'])
-        print('Lösche:',what_to_delete)
-        what_to_delete.delete()
-    return render(request, 'koop_3.html')
-
-def Person_3_sum(request):
-    if request.method == 'POST':
-        alle_eintraege = Person3.objects.all()
-        gesamte_euro_summe = 0
-        for id in alle_eintraege:
-            gesamte_euro_summe += id.price * id.amount
-            gesamte_euro_summe = round(gesamte_euro_summe, 2)
-        print('Summe:',gesamte_euro_summe)
-    return render(request, 'koop_3.html')   
-
-"""
+# endregion
