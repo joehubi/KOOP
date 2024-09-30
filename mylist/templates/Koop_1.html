@@ -7,7 +7,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{{ page_membername }}</title>    <!-- dictionary delivered by views.py -->
+        <title>{{ page_membername }}</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
         <style>
             header {
                 font-family: 'Open Sans', sans-serif;
-                background-color: {{ page_color }}; 
+                background-color: {{ page_color }};
                 display: flex;
                 padding-left: 20px;
                 box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
@@ -28,7 +28,6 @@
     </head>
 
 <body>
-    <!-- dictionary delivered by views.py -->
     <header>
         <h1>
         [{{ Nr_id }}]
@@ -41,14 +40,14 @@
 
 <form onsubmit="eingabe_return(); return false;">
     &nbsp;&nbsp;
-    <label for="artikel_id">Artikel</label>
-    <input type="text" id="artikel_id" name="artikel" maxlength="200">
+    <label for="artikel_manual">Artikel</label>
+    <input type="text" id="artikel_manual" name="textfeld" maxlength="200">
     &nbsp;&nbsp;&nbsp;
-    <label for="stk_kg_id">Menge in kg/Stk:</label>
-    <input type="number" id="stk_kg_id" name="stk_kg" step="0.001" min="0" required>
+    <label for="stk_kg_manual">Menge in kg/Stk:</label>
+    <input type="number" id="stk_kg_manual" name="stk_kg" step="0.001" min="0" required>
     &nbsp;&nbsp;&nbsp;
-    <label for="preis_id">Preis in €:</label>
-    <input type="number" id="preis_id" name="preis" step="0.01" min="-100" required>
+    <label for="preis_manual">Preis in €:</label>
+    <input type="number" id="preis_manual" name="stk_kg" step="0.01" min="-100" required>
 
     <input type="submit" class="unvisible">
 </form>
@@ -70,7 +69,7 @@
                 <th>Einzelpreis [€]</th>
                 <th>Gesamtpreis [€]</th>
         </thead>
-        <!-- dictionary delivered by views.py -->
+
         {% for row in all_items %}
 
             <tbody>
@@ -93,14 +92,12 @@
     <script>
         let token = '{{ csrf_token }}';
 
-        // delay function to reload the HTML/website
         function delay_reload(time) {
             setTimeout(function() {
                 location.reload();
             }, time);
         }
 
-        // add an article/einkauf
         function hinzufuegen() {
             addItemManually2('{{ Nr_id }}');
             setTimeout(function() {
@@ -109,7 +106,6 @@
             delay_reload(1000)
         }
 
-        // Delete an article with given number
         function loeschen() {
             deleteItem('{{ Nr_id }}')
             setTimeout(function() {
@@ -118,7 +114,6 @@
             delay_reload(1000)
         }
 
-        // this happens when the return-key is pressed
         function eingabe_return() {
             addItemManually2('{{ Nr_id }}');
             setTimeout(function() {
@@ -127,13 +122,11 @@
             delay_reload(1000)
         }
 
-        // building sum of all open articles
         function Summe() {
             sum('{{ Nr_id }}');
             setTimeout(location.reload(), 400);
         }
 
-        // Building a time-stamp
         function getFormattedDate() {
             var now = new Date();
             var year = now.getFullYear().toString().substr(-2); // Letzte zwei Ziffern des Jahres
@@ -143,7 +136,6 @@
             return year + month + day + '_';
         }
 
-        // setting up a HTML title with timestamp to easily print the list with a given name (e.g. as PDF)
         function displayDateStamp() {
             var dateStamp = getFormattedDate();
             var membername = '{{ page_membername }}';
@@ -156,7 +148,6 @@
 
 </body>
 
-<!-- updating the timestamp on reload -->
 <body onload="displayDateStamp()">
     <p><span id="dateStamp"></span></p>
 </body>

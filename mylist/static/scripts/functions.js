@@ -9,9 +9,9 @@ function generatePersonPath(personNumber, action) {
 
 // Hinzufügen von Artikeln/Einkäufen
 function addItemManually2(personNumber) {
-    var itemName = document.getElementById("artikel_id").value;
-    var itemAmount = document.getElementById("stk_kg_id").value;
-    var itemPrice = document.getElementById("preis_id").value;
+    var itemName = document.getElementById("artikel_manual").value;
+    var itemAmount = document.getElementById("stk_kg_manual").value;
+    var itemPrice = document.getElementById("preis_manual").value;
 
     let formData = new FormData();
     formData.append('itemName', itemName);
