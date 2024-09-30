@@ -58,6 +58,8 @@ def konto_add(request):
         
     all_Saves = Save.objects.all()    
     memberdaten = Members.objects.all()
+    
+    # passing the data to the HTML
     return render(request, 'Koop_konto.html', {'all_items': ActItems, 'all_saves': all_Saves, 'memberdaten': memberdaten})
 
 def konto_add2(request):
