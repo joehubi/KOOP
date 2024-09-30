@@ -311,48 +311,48 @@ def Person_15_sum(request):
 
 # region ###################### !!!NICHT AKTIV!!! Bestellungen
 # Noch in der Testphase
-def order_add(request):
+# def order_add(request):
 
-    if request.method == 'POST':
-        print('Call PDF2CSV')
-
-
-        def extract_lines_with_numbers(text):
-            lines = text.split('\n')
-            extracted_lines = []
-            for line in lines:
-                if re.findall(r'^\s*\d{5,6}\b', line):  # Match lines starting with 5 or 6-digit numbers
-                    extracted_lines.append(line.strip())   
-            return extracted_lines
-
-        def add_semicolon(text):
-            # Define a regular expression pattern to match the desired format
-            pattern = re.compile(r'(\d{5,6})\s+(\d+)\s+(.{15})\s+(.{5})\s+(.{31})\s+(.{14})\s+(.{7})\s+(.{8})')
-            # Use re.sub to replace the matched pattern with the number followed by a semicolon
-            modified_text = pattern.sub(r'\1;\2;\3;\4;\5;\6;\7;\8', text)       
-            return modified_text
-
-        pdf_path = 'C:\\Dev\\Rechnung.pdf'  # Update with your PDF file path
-        output_file = 'C:\\Dev\\Lieferung.csv'
-
-        with open(pdf_path, 'rb') as file:
-            pdf_reader = PdfReader(file)
-            text = ''
-            for page in pdf_reader.pages:
-                text += page.extract_text()
-
-            extracted_lines = extract_lines_with_numbers(text)
-
-            with open(output_file, 'w') as output:
-                for line in extracted_lines:
-                    line_added_semicolon = add_semicolon(line)
-                    output.write(line_added_semicolon + '\n')
+#     if request.method == 'POST':
+#         print('Call PDF2CSV')
 
 
+#         def extract_lines_with_numbers(text):
+#             lines = text.split('\n')
+#             extracted_lines = []
+#             for line in lines:
+#                 if re.findall(r'^\s*\d{5,6}\b', line):  # Match lines starting with 5 or 6-digit numbers
+#                     extracted_lines.append(line.strip())   
+#             return extracted_lines
 
-    ActItems = Konto.objects.all()
-    all_Saves = Save.objects.all()
-    return render(request, 'Koop_Order.html', {'all_items': ActItems, 'all_saves': all_Saves})
+#         def add_semicolon(text):
+#             # Define a regular expression pattern to match the desired format
+#             pattern = re.compile(r'(\d{5,6})\s+(\d+)\s+(.{15})\s+(.{5})\s+(.{31})\s+(.{14})\s+(.{7})\s+(.{8})')
+#             # Use re.sub to replace the matched pattern with the number followed by a semicolon
+#             modified_text = pattern.sub(r'\1;\2;\3;\4;\5;\6;\7;\8', text)       
+#             return modified_text
+
+#         pdf_path = 'C:\\Dev\\Rechnung.pdf'  # Update with your PDF file path
+#         output_file = 'C:\\Dev\\Lieferung.csv'
+
+#         with open(pdf_path, 'rb') as file:
+#             pdf_reader = PdfReader(file)
+#             text = ''
+#             for page in pdf_reader.pages:
+#                 text += page.extract_text()
+
+#             extracted_lines = extract_lines_with_numbers(text)
+
+#             with open(output_file, 'w') as output:
+#                 for line in extracted_lines:
+#                     line_added_semicolon = add_semicolon(line)
+#                     output.write(line_added_semicolon + '\n')
+
+
+
+#     ActItems = Konto.objects.all()
+#     all_Saves = Save.objects.all()
+#     return render(request, 'Koop_Order.html', {'all_items': ActItems, 'all_saves': all_Saves})
 # endregion
 # region ###################### !!!NICHT AKTIV!!! Preisliste
 def Koop_view_price_1(request):
