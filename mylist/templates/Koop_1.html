@@ -7,7 +7,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{{ page_membername }}</title>
+        <title>{{ page_membername }}</title>    <!-- dictionary delivered by views.py -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
         <style>
             header {
                 font-family: 'Open Sans', sans-serif;
-                background-color: {{ page_color }};
+                background-color: {{ page_color }}; 
                 display: flex;
                 padding-left: 20px;
                 box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
@@ -28,11 +28,12 @@
     </head>
 
 <body>
+    <!-- dictionary delivered by views.py -->
     <header>
         <h1>
         [{{ Nr_id }}]
         &nbsp;
-        {{ page_membername }}
+        {{ page_membername }} 
         &nbsp;
         (Summe: {{ page_sum }} €)
         </h1>
@@ -69,7 +70,7 @@
                 <th>Einzelpreis [€]</th>
                 <th>Gesamtpreis [€]</th>
         </thead>
-
+        <!-- dictionary delivered by views.py -->
         {% for row in all_items %}
 
             <tbody>
@@ -99,31 +100,31 @@
         }
 
         function hinzufuegen() {
-            addItemManually2({{ Nr_id }});
+            addItemManually2('{{ Nr_id }}');
             setTimeout(function() {
-                sum({{ Nr_id }});
+                sum('{{ Nr_id }}');
             }, 1000);
             delay_reload(1000)
         }
 
         function loeschen() {
-            deleteItem({{ Nr_id }})
+            deleteItem('{{ Nr_id }}')
             setTimeout(function() {
-                sum({{ Nr_id }});
+                sum('{{ Nr_id }}');
             }, 1000);
             delay_reload(1000)
         }
 
         function eingabe_return() {
-            addItemManually2({{ Nr_id }});
+            addItemManually2('{{ Nr_id }}');
             setTimeout(function() {
-                sum({{ Nr_id }});
+                sum('{{ Nr_id }}')
             }, 1000);
             delay_reload(1000)
         }
 
         function Summe() {
-            sum({{ Nr_id }});
+            sum('{{ Nr_id }}');
             setTimeout(location.reload(), 400);
         }
 

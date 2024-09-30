@@ -32,7 +32,7 @@
         <h1>
         [{{ Nr_id }}]
         &nbsp;
-        {{ page_membername }}
+        {{ page_membername }} 
         &nbsp;
         (Summe: {{ page_sum }} €)
         </h1>
@@ -99,31 +99,31 @@
         }
 
         function hinzufuegen() {
-            addItemManually2({{ Nr_id }});
+            addItemManually2('{{ Nr_id }}');
             setTimeout(function() {
-                sum({{ Nr_id }});
+                sum('{{ Nr_id }}');
             }, 1000);
             delay_reload(1000)
         }
 
         function loeschen() {
-            deleteItem({{ Nr_id }})
+            deleteItem('{{ Nr_id }}')
             setTimeout(function() {
-                sum({{ Nr_id }});
+                sum('{{ Nr_id }}');
             }, 1000);
             delay_reload(1000)
         }
 
         function eingabe_return() {
-            addItemManually2({{ Nr_id }});
+            addItemManually2('{{ Nr_id }}');
             setTimeout(function() {
-                sum({{ Nr_id }});
+                sum('{{ Nr_id }}')
             }, 1000);
             delay_reload(1000)
         }
 
         function Summe() {
-            sum({{ Nr_id }});
+            sum('{{ Nr_id }}');
             setTimeout(location.reload(), 400);
         }
 
