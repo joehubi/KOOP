@@ -25,3 +25,8 @@ Lokales Repositor erstellen
         python manage.py createsuperuser
 7. Server starten
         python manage.py runserver
+
+
+HTML
+####
+Alle HTML Koop_1.html bis Koop_15.html sind identisch!!!!
