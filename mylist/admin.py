@@ -4,6 +4,7 @@ from .models import PriceList
 from .models import Members
 from .models import Konto
 from .models import Save
+from .models import Warenliste
 
 from .models import Person1
 from .models import Person2
@@ -82,11 +83,15 @@ class Person15Admin(admin.ModelAdmin):
 class KontoAdmin(admin.ModelAdmin):
     list_display = ('id', 'nr', 'created_at', 'cashflow', 'comment','comment2')
 
+class WarenlisteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'artikelnummer', 'artikelname', 'sortiment', 'artikelname_neu')
+
 # Register your models here.
 admin.site.register(PriceList)
 admin.site.register(Members)
 admin.site.register(Konto, KontoAdmin)
 admin.site.register(Save)
+admin.site.register(Warenliste, WarenlisteAdmin)
 
 admin.site.register(Person1, Person1Admin)
 admin.site.register(Person2, Person2Admin)
