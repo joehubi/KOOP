@@ -38,6 +38,23 @@
         </h1>
     </header>
 
+    <form>
+        <label for="sel_frischware">Frischware: </label>
+        <select id="sel_frischware" name="sel_frischware" onchange="Frischware()">
+            {% for row in preise_frischware %}
+                <option value="{{ row.price }}">{{ row.name }} - {{ row.price }} €</option>
+            {% endfor %}
+        </select>    
+    </form>
+    <form>
+        <label for="sel_obst">Obst: </label>
+        <select id="sel_obst" name="sel_obst" onchange="Frischware()">
+            {% for row in preise_obst %}
+                <option value="{{ row.price }}">{{ row.name }} - {{ row.price }} €</option>
+            {% endfor %}
+        </select>    
+    </form>
+
 <form onsubmit="eingabe_return(); return false;">
     &nbsp;&nbsp;
     <label for="artikel_manual">Artikel</label>
@@ -144,6 +161,14 @@
             document.title = dateStamp + membername;
         }
 
+        function Frischware() {
+            var selectedIndex = document.getElementById("sel_frischware").selectedIndex;
+            var ausgewaehlterText = document.getElementById("sel_frischware").options[selectedIndex].text;
+            var dropdown = document.getElementById("sel_frischware"); // JavaScript-Code, um die ausgewählte Nummer anzuzeigen
+
+            //addy(dropdown.value - 1)
+            delay_reload(1000)           
+        }
     </script>
 
 </body>

@@ -90,10 +90,13 @@ class KontoAdmin(admin.ModelAdmin):
 
 class WarenlisteAdmin(admin.ModelAdmin):
     list_display = ('id', 'artikelnummer', 'artikelname', 'sortiment', 'artikelname_neu')
+
+class PriceListAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'price', 'type', 'category')
 # endregion
 
 # region ################# Register models
-admin.site.register(PriceList)
+admin.site.register(PriceList, PriceListAdmin)
 admin.site.register(Members)
 admin.site.register(Konto, KontoAdmin)
 admin.site.register(Save)

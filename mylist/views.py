@@ -58,7 +58,7 @@ def konto_add(request):
         
     all_Saves = Save.objects.all()    
     memberdaten = Members.objects.all()
-    
+
     # passing the data to the HTML
     return render(request, 'Koop_konto.html', {'all_items': ActItems, 'all_saves': all_Saves, 'memberdaten': memberdaten})
 
@@ -95,6 +95,9 @@ def add_person(request, person_id):
     all_items = get_person_model(person_id).objects.filter(done=False).order_by('-id')
     
     all_members = Members.objects.all()
+    preise_frischware = PriceList.objects.filter(category="Frischware")
+    preise_obst = PriceList.objects.filter(category="Obst")
+    preise_gemuese = PriceList.objects.filter(category="Gemüse")
 
     member = Members.objects.get(id=person_id+1)
     page_membername = member.name   # Übergibt die Werte an die HTML
@@ -102,7 +105,7 @@ def add_person(request, person_id):
     page_sum = member.sum           # Übergibt die Werte an die HTML
     Nr_id = person_id               # Übergibt die Werte an die HTML
 
-    return render(request, f'koop_{person_id}.html', {'all_items': all_items, 'all_members': all_members, 'page_membername': page_membername, 'page_color': page_color, 'page_sum': page_sum, 'Nr_id': Nr_id})
+    return render(request, f'koop_{person_id}.html', {'all_items': all_items, 'all_members': all_members, 'page_membername': page_membername, 'page_color': page_color, 'page_sum': page_sum, 'Nr_id': Nr_id, 'preise_frischware': preise_frischware, 'preise_obst': preise_obst, 'preise_gemuese': preise_gemuese})
 
 # Löschen eines Einkaufs/Artikels aus der Liste
 def delete_person(request, person_id):
