@@ -1,3 +1,4 @@
+# region ############# Import
 from django.contrib import admin
 
 from .models import PriceList
@@ -21,19 +22,23 @@ from .models import Person12
 from .models import Person13
 from .models import Person14
 from .models import Person15
+# endregion
+
 
 # Entfernt die Standard-Aktion (LÖSCHEN)
 admin.site.disable_action('delete_selected')
 
+# User Aktion ABGERECHNET
 def DONE_TRUE(modeladmin, request, queryset):
     queryset.update(done=True)
 DONE_TRUE.short_description = "ABGERECHNET"
 
+# User Aktion OFFEN
 def DONE_FALSE(modeladmin, request, queryset):
     queryset.update(done=False)
 DONE_FALSE.short_description = "OFFEN"
 
-# Klassen
+# region ################## Klassen
 class Person1Admin(admin.ModelAdmin):
     actions = [DONE_TRUE, DONE_FALSE]
     list_display = ('id', 'done', 'created_at', 'name', 'amount','price')
@@ -85,8 +90,9 @@ class KontoAdmin(admin.ModelAdmin):
 
 class WarenlisteAdmin(admin.ModelAdmin):
     list_display = ('id', 'artikelnummer', 'artikelname', 'sortiment', 'artikelname_neu')
+# endregion
 
-# Register your models here.
+# region ################# Register models
 admin.site.register(PriceList)
 admin.site.register(Members)
 admin.site.register(Konto, KontoAdmin)
@@ -108,3 +114,4 @@ admin.site.register(Person12, Person12Admin)
 admin.site.register(Person13, Person13Admin)
 admin.site.register(Person14, Person14Admin)
 admin.site.register(Person15, Person15Admin)
+# endregion
