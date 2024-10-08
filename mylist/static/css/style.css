@@ -22,7 +22,7 @@ button {
 
 input[type="text"] {
     font-size: 33px;        /* Ändere die Schriftgröße nach Bedarf */
-    width: 20%;             /* Fülle die gesamte Breite des Containers aus */
+    width: 38%;             /* Fülle die gesamte Breite des Containers aus */
     margin-top: 10px;       /* Abstand zwischen den Eingabefeldern */
     margin-bottom: 10px;    /* Abstand zwischen den Eingabefeldern */
     padding: 5px;           /* Innenabstand für bessere Lesbarkeit */
@@ -36,8 +36,8 @@ input[type="number"] {
     padding: 5px;           /* Innenabstand für bessere Lesbarkeit */
 }
 
-#namenListe, #sel_frischware, #sel_obst {
-    width: 500px;
+#namenListe, #sel_frischware, #sel_obst, #sel_trockenware, #sel_gemuese, #sel_sonstiges {
+    width: 700px;
     height: 50px;
     font-size: 33px;
 }

@@ -11,9 +11,10 @@ class PriceList(models.Model):
     price = models.FloatField(default=0)        # in €
     type = models.CharField(max_length=5)       # Stk, kg, Pfand
     category = models.CharField(max_length=20, default='-') # Kategorie/Preisart/Sortiment
+    status = models.BooleanField(default=True) # true = neuer oder aktueller Artikel, false = Artikel nicht mehr aktuell im Sortiment vorhanden
 
     def __str__(self):
-        return str(self.id) + ' - ' + self.name + ' - ' + str(self.price) + ' - ' + self.type + ' - ' + self.category
+        return  str(self.status) + ' - ' + str(self.id) + ' - ' + self.name + ' - ' + str(self.price) + ' - ' + self.type + ' - ' + self.category
 # endregion
 
 # region ###################### Konto

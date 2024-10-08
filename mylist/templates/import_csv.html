@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CSV-Import</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+        <style>
+            header {
+                font-family: 'Open Sans', sans-serif;
+                background-color: #F1F1F1;
+                display: flex;
+                padding-left: 20px;
+                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+            } 
+        </style>
+    </head>
+
+<body>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Importieren</button>
+  </form>
+  <br>
+  Die Preislisten für den Import müssen folgenden Aufbau haben:
+  <div style="text-indent:10px;">- Anordung</div>
+  <div style="text-indent:20px;">1. Artikelname</div>
+  <div style="text-indent:20px;">2. Preis in €;</div>
+  <div style="text-indent:20px;">3. Typ in kg oder Stk</div>
+  <div style="text-indent:20px;">4. Kategorie/Sortiment in</div>
+  <div style="text-indent:30px;">- Obst</div>
+  <div style="text-indent:30px;">- Gemüse</div>
+  <div style="text-indent:30px;">- Frischware</div>
+  <div style="text-indent:30px;">- Sonstiges</div>
+  <div style="text-indent:30px;">- Trockenware</div>
+  <div style="text-indent:10px;">- Separator = ";"</div>
+  <br>
+  z.B.
+  <br><br>
+  Birnen;1.1;kg;Obst<br>
+  Äpfel;0.85;kg;Obst<br>
+  Orangen;1.2;kg;Obst<br>
+  Kirschen;1.8;kg;Obst<br>
+  Zitronen;2.95;kg;Obst<br>
+  Saftorangen;0.5;kg;Obst<br>
+
+</body>

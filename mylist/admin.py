@@ -24,7 +24,6 @@ from .models import Person14
 from .models import Person15
 # endregion
 
-
 # Entfernt die Standard-Aktion (LÖSCHEN)
 admin.site.disable_action('delete_selected')
 
@@ -37,6 +36,21 @@ DONE_TRUE.short_description = "ABGERECHNET"
 def DONE_FALSE(modeladmin, request, queryset):
     queryset.update(done=False)
 DONE_FALSE.short_description = "OFFEN"
+
+# User Aktion AKTUELL
+def STATUS_TRUE(modeladmin, request, queryset):
+    queryset.update(status=True)
+STATUS_TRUE.short_description = "AKTUELL"
+
+# User Aktion AUSSORTIERT
+def STATUS_FALSE(modeladmin, request, queryset):
+    queryset.update(status=False)
+STATUS_FALSE.short_description = "AUSSORTIERT"
+
+# User Aktion LÖSCHEN
+def DELETE(modeladmin, request, queryset):
+    queryset.delete()
+DELETE.short_description = "LÖSCHEN"
 
 # region ################## Klassen
 class Person1Admin(admin.ModelAdmin):
@@ -92,7 +106,8 @@ class WarenlisteAdmin(admin.ModelAdmin):
     list_display = ('id', 'artikelnummer', 'artikelname', 'sortiment', 'artikelname_neu')
 
 class PriceListAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'price', 'type', 'category')
+    actions = [STATUS_TRUE, STATUS_FALSE, DELETE]
+    list_display = ('id', 'status', 'name', 'price', 'type', 'category')
 # endregion
 
 # region ################# Register models

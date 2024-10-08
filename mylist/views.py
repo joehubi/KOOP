@@ -1,7 +1,8 @@
 # region ###################### IMPORT
 from django.shortcuts import render
 from django.db.models import Sum
-
+import csv
+from .forms import CSVUploadForm
 import re
 
 from .models import Person1
@@ -24,6 +25,39 @@ from .models import PriceList
 from .models import Members
 from .models import Konto
 from .models import Save
+# endregion
+
+# region ###################### CSV Import
+def import_csv(request):
+
+    daten1 = PriceList.objects.all().order_by('name')
+    daten2 = PriceList.objects.all().order_by('price')
+
+    if request.method == 'POST':
+        form = CSVUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            csv_file = request.FILES['csv_file'].read().decode('utf-8')
+            csv_data = csv.reader(csv_file.splitlines(), delimiter=";")
+            
+            for i, row_value in enumerate(csv_data):
+
+                # Testausgabe
+                print(f"i = {i}")
+                print(f"Column1 = {row_value[0]}")
+                print(f"Column2 = {row_value[1]}")
+
+                # Eintrag in Datenbank erstellen aus der .csv-Datei
+                PriceList.objects.create(
+                    name = row_value[0],           # Entsprechend der Anordung in der .csv Datei
+                    price = row_value[1],
+                    type = row_value[2],
+                    category = row_value[3],
+                )
+
+    else:
+        form = CSVUploadForm()
+
+    return render(request, 'import_csv.html', {'form': form, 'daten1': daten1, 'daten2': daten2})
 # endregion
 
 # region ###################### Konto
@@ -95,9 +129,11 @@ def add_person(request, person_id):
     all_items = get_person_model(person_id).objects.filter(done=False).order_by('-id')
     
     all_members = Members.objects.all()
-    preise_frischware = PriceList.objects.filter(category="Frischware")
-    preise_obst = PriceList.objects.filter(category="Obst")
-    preise_gemuese = PriceList.objects.filter(category="Gemüse")
+    preise_frischware = PriceList.objects.filter(category="Frischware").order_by('name')
+    preise_obst = PriceList.objects.filter(category="Obst").order_by('name')
+    preise_gemuese = PriceList.objects.filter(category="Gemüse").order_by('name')
+    preise_trockenware = PriceList.objects.filter(category="Trockenware").order_by('name')
+    preise_sonstiges = PriceList.objects.filter(category="Sonstiges").order_by('name')
 
     member = Members.objects.get(id=person_id+1)
     page_membername = member.name   # Übergibt die Werte an die HTML
@@ -105,7 +141,7 @@ def add_person(request, person_id):
     page_sum = member.sum           # Übergibt die Werte an die HTML
     Nr_id = person_id               # Übergibt die Werte an die HTML
 
-    return render(request, f'koop_{person_id}.html', {'all_items': all_items, 'all_members': all_members, 'page_membername': page_membername, 'page_color': page_color, 'page_sum': page_sum, 'Nr_id': Nr_id, 'preise_frischware': preise_frischware, 'preise_obst': preise_obst, 'preise_gemuese': preise_gemuese})
+    return render(request, f'koop_{person_id}.html', {'all_items': all_items, 'all_members': all_members, 'page_membername': page_membername, 'page_color': page_color, 'page_sum': page_sum, 'Nr_id': Nr_id, 'preise_frischware': preise_frischware, 'preise_obst': preise_obst, 'preise_gemuese': preise_gemuese, 'preise_trockenware': preise_trockenware, 'preise_sonstiges': preise_sonstiges})
 
 # Löschen eines Einkaufs/Artikels aus der Liste
 def delete_person(request, person_id):
