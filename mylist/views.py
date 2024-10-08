@@ -27,6 +27,20 @@ from .models import Konto
 from .models import Save
 # endregion
 
+
+# region ###################### Finanzdienst
+def finanzdienst(request):
+
+    if request.method == 'POST':
+        print("Alle abrechnen")
+        person_model = get_person_model(1)
+
+        instances = person_model.objects.filter(done=False)
+        instances.update(done=True)
+        
+    return render(request, 'finanzdienst.html', {})
+# endregion
+
 # region ###################### CSV Import
 def import_csv(request):
 
@@ -113,9 +127,9 @@ def konto_add2(request):
 # Artikel hinzufügen/einkaufen
 def add_person(request, person_id):
     if request.method == 'POST':
-        name = request.POST['itemName']
-        amount = request.POST['itemAmount']
-        price = request.POST['itemPrice']
+        name    = request.POST['itemName']
+        amount  = request.POST['itemAmount']
+        price   = request.POST['itemPrice']
         
         # Erstellen Sie das Person-Objekt basierend auf der übergebenen Personen-ID
         person_model = get_person_model(person_id)
@@ -129,11 +143,12 @@ def add_person(request, person_id):
     all_items = get_person_model(person_id).objects.filter(done=False).order_by('-id')
     
     all_members = Members.objects.all()
-    preise_frischware = PriceList.objects.filter(category="Frischware").order_by('name')
-    preise_obst = PriceList.objects.filter(category="Obst").order_by('name')
-    preise_gemuese = PriceList.objects.filter(category="Gemüse").order_by('name')
-    preise_trockenware = PriceList.objects.filter(category="Trockenware").order_by('name')
-    preise_sonstiges = PriceList.objects.filter(category="Sonstiges").order_by('name')
+
+    preise_frischware   = PriceList.objects.filter(category="Frischware").order_by('name')
+    preise_obst         = PriceList.objects.filter(category="Obst").order_by('name')
+    preise_gemuese      = PriceList.objects.filter(category="Gemüse").order_by('name')
+    preise_trockenware  = PriceList.objects.filter(category="Trockenware").order_by('name')
+    preise_sonstiges    = PriceList.objects.filter(category="Sonstiges").order_by('name')
 
     member = Members.objects.get(id=person_id+1)
     page_membername = member.name   # Übergibt die Werte an die HTML
