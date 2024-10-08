@@ -14,13 +14,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# region ##################### IMPORT
 from django.contrib import admin
 from django.urls import path
 
 from mylist.views import Testing_add
 
 from mylist.views import order_add
-
+from mylist.views import import_csv
 from mylist.views import konto_add
 from mylist.views import konto_add2
 
@@ -104,11 +105,13 @@ from mylist.views import Person_15_add
 from mylist.views import Person_15_addSmart
 from mylist.views import Person_15_delete
 from mylist.views import Person_15_sum
+# endregion
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('Testing/add/', Testing_add),
+    path('import/', import_csv),
 
     path('Order/add/', order_add),
 

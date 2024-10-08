@@ -7,13 +7,14 @@ from django.db import models
 # Modell für die Preislisten. Wird noch nicht aktiv verwendet
 
 class PriceList(models.Model):
-    name = models.CharField(max_length=200)
-    price = models.FloatField(default=0)
-    type = models.CharField(max_length=5)
-    category = models.CharField(max_length=20, default='-')
+    name = models.CharField(max_length=200)     # Artikelname
+    price = models.FloatField(default=0)        # in €
+    type = models.CharField(max_length=5)       # Stk, kg, Pfand
+    category = models.CharField(max_length=20, default='-') # Kategorie/Preisart/Sortiment
+    status = models.BooleanField(default=True) # true = neuer oder aktueller Artikel, false = Artikel nicht mehr aktuell im Sortiment vorhanden
 
     def __str__(self):
-        return str(self.id) + ' - ' + self.name + ' - ' + str(self.price) + ' - ' + self.type + ' - ' + self.category
+        return  str(self.status) + ' - ' + str(self.id) + ' - ' + self.name + ' - ' + str(self.price) + ' - ' + self.type + ' - ' + self.category
 # endregion
 
 # region ###################### Konto
@@ -99,6 +100,18 @@ class Person(models.Model):
 
     class Meta:
         abstract = True
+# endregion
+
+# region ###################### Warenliste
+
+class Warenliste(models.Model):
+    artikelnummer = models.IntegerField(default=0)     # Artikelnummer von Ökoring
+    artikelname = models.CharField(max_length=200)     # Artikelname der bei Ökoring auf der Rechnung steht
+    sortiment = models.CharField(max_length=200)       # Sortiment = Kategorie (Fleisch, Obst, etc.)
+    artikelname_neu = models.CharField(max_length=200) # Dieser Name wird dann in der Preisliste angezeigt
+
+    def __str__(self):
+        return str(self.id) + '-' + str(self.artikelnummer) + ' - ' + self.artikelname + ' - ' + self.sortiment + '-' + self.artikelname_neu
 # endregion
 
 # region ###################### Members
