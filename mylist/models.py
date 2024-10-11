@@ -9,9 +9,27 @@ from django.db import models
 class PriceList(models.Model):
     name = models.CharField(max_length=200)     # Artikelname
     price = models.FloatField(default=0)        # in €
-    type = models.CharField(max_length=5)       # Stk, kg, Pfand
-    category = models.CharField(max_length=20, default='-') # Kategorie/Preisart/Sortiment
-    status = models.BooleanField(default=True) # true = neuer oder aktueller Artikel, false = Artikel nicht mehr aktuell im Sortiment vorhanden
+
+    NAME_CHOICES1 = (
+        ("Stk", "Stk"),
+        ("kg",  "kg"),
+        ("Pfand", "Pfand"),
+    )
+    NAME_CHOICES2 = (
+        ("Obst", "Obst"),
+        ("Gemüse",  "Gemüse"),
+        ("Frischwaren",  "Frischwaren"),
+        ("Fleisch",  "Fleisch"),
+        ("Getränke",  "Getränke"),
+        ("Tiefkühl",  "Tiefkühl"),
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)                            # Zeitstempel
+    type = models.CharField(choices=NAME_CHOICES1, max_length=5)                    # Stk, kg, Pfand
+    category = models.CharField(choices=NAME_CHOICES2, max_length=20, default='-')  # Kategorie/Preisart/Sortiment
+    status = models.BooleanField(default=True)                                      # true = neuer oder aktueller Artikel, false = Artikel nicht mehr aktuell im Sortiment vorhanden
+    article_number = models.IntegerField(default=0)
+    delivery_date = models.DateField(default='10.10.1999')                      # Lieferdatum
 
     def __str__(self):
         return  str(self.status) + ' - ' + str(self.id) + ' - ' + self.name + ' - ' + str(self.price) + ' - ' + self.type + ' - ' + self.category

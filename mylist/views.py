@@ -4,6 +4,7 @@ from django.db.models import Sum
 import csv
 from .forms import CSVUploadForm
 import re
+from datetime import datetime
 
 from .models import Person1
 from .models import Person2
@@ -47,6 +48,14 @@ def finanzdienst(request):
 # endregion
 
 # region ###################### CSV Import
+def convert_date_format(date_str):
+    try:
+        # Konvertiere das Datum vom Format 'TT.MM.JJJJ' zu 'YYYY-MM-DD'
+        return datetime.strptime(date_str, '%d.%m.%Y').strftime('%Y-%m-%d')
+    except ValueError:
+        # Falls das Datum nicht im erwarteten Format ist, Fehler ausgeben
+        raise ValidationError(f'{date_str} has an invalid format. Please use DD.MM.YYYY format.')
+
 def import_csv(request):
 
     daten1 = PriceList.objects.all().order_by('name')
@@ -60,6 +69,8 @@ def import_csv(request):
             
             for i, row_value in enumerate(csv_data):
 
+                row_value[5] = convert_date_format(row_value[5])    # convert date from .csv to django-timestamp
+
                 # Testausgabe
                 print(f"i = {i}")
                 print(f"Column1 = {row_value[0]}")
@@ -67,10 +78,12 @@ def import_csv(request):
 
                 # Eintrag in Datenbank erstellen aus der .csv-Datei
                 PriceList.objects.create(
-                    name = row_value[0],           # Entsprechend der Anordung in der .csv Datei
-                    price = row_value[1],
-                    type = row_value[2],
-                    category = row_value[3],
+                    article_number = row_value[0],           # Entsprechend der Anordung in der .csv Datei
+                    category = row_value[1],
+                    name = row_value[2],
+                    price = row_value[3],
+                    type = row_value[4],
+                    delivery_date = row_value[5],
                 )
 
     else:
@@ -152,11 +165,12 @@ def add_person(request, person_id):
     
     all_members = Members.objects.all()
 
-    preise_frischware   = PriceList.objects.filter(category="Frischware").order_by('name')
-    preise_obst         = PriceList.objects.filter(category="Obst").order_by('name')
-    preise_gemuese      = PriceList.objects.filter(category="Gemüse").order_by('name')
-    preise_trockenware  = PriceList.objects.filter(category="Trockenware").order_by('name')
-    preise_sonstiges    = PriceList.objects.filter(category="Sonstiges").order_by('name')
+    preise_frischware   = PriceList.objects.filter(category="Frischwaren", status=True).order_by('name')
+    preise_obst         = PriceList.objects.filter(category="Obst", status=True).order_by('name')
+    preise_gemuese      = PriceList.objects.filter(category="Gemüse", status=True).order_by('name')
+    preise_fleisch      = PriceList.objects.filter(category="Fleisch", status=True).order_by('name')
+    preise_getraenke    = PriceList.objects.filter(category="Getränke", status=True).order_by('name')
+    preise_tiefkuehl    = PriceList.objects.filter(category="Tiefkühl", status=True).order_by('name')
 
     member = Members.objects.get(id=person_id)
     page_membername = member.name   # Übergibt die Werte an die HTML
@@ -164,7 +178,7 @@ def add_person(request, person_id):
     page_sum = member.sum           # Übergibt die Werte an die HTML
     Nr_id = person_id               # Übergibt die Werte an die HTML
 
-    return render(request, f'koop_{person_id}.html', {'all_items': all_items, 'all_members': all_members, 'page_membername': page_membername, 'page_color': page_color, 'page_sum': page_sum, 'Nr_id': Nr_id, 'preise_frischware': preise_frischware, 'preise_obst': preise_obst, 'preise_gemuese': preise_gemuese, 'preise_trockenware': preise_trockenware, 'preise_sonstiges': preise_sonstiges})
+    return render(request, f'koop_{person_id}.html', {'all_items': all_items, 'all_members': all_members, 'page_membername': page_membername, 'page_color': page_color, 'page_sum': page_sum, 'Nr_id': Nr_id, 'preise_frischware': preise_frischware, 'preise_obst': preise_obst, 'preise_gemuese': preise_gemuese, 'preise_fleisch': preise_fleisch, 'preise_getraenke': preise_getraenke, 'preise_tiefkuehl': preise_tiefkuehl})
 
 # Löschen eines Einkaufs/Artikels aus der Liste
 def delete_person(request, person_id):
