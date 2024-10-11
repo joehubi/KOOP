@@ -34,7 +34,8 @@
 
     <form>
         <label for="namenListe">Konto auswählen</label>
-        <select id="namenListe" name="namenListe" onchange="meineFunktion()">
+        <select id="namenListe" name="namenListe" onchange="Konto_anzeigen()">
+            <option value="" selected disabled hidden>Bitte Auswählen</option>
             {% for row in memberdaten %}
                 <option value="{{ row.id }}">{{ row.name }}</option>
             {% endfor %}
@@ -81,7 +82,7 @@
             }, time);
         }
 
-        function meineFunktion() {
+        function Konto_anzeigen() {
             var selectedIndex = document.getElementById("namenListe").selectedIndex;
             var ausgewaehlterText = document.getElementById("namenListe").options[selectedIndex].text;
             //alert(ausgewaehlterText);
@@ -89,7 +90,7 @@
             // JavaScript-Code, um die ausgewählte Nummer anzuzeigen
             var dropdown = document.getElementById("namenListe");
 
-            addy(dropdown.value - 1)
+            addy(dropdown.value)
             delay_reload(1000)           
         }
 

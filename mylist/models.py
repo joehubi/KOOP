@@ -145,21 +145,22 @@ class Warenliste(models.Model):
 
 # Am Anfang bei Einrichtung der Datenbank/Django auskommentieren
 # Das ist leider notwendig, da dieser Code zu einem Fehler führt, solange die DB nicht vorhanden ist.
-name1 = Members.objects.get(id=1+1)
-name2 = Members.objects.get(id=2+1)
-name3 = Members.objects.get(id=3+1)
-name4 = Members.objects.get(id=4+1)
-name5 = Members.objects.get(id=5+1)
-name6 = Members.objects.get(id=6+1)
-name7 = Members.objects.get(id=7+1)
-name8 = Members.objects.get(id=8+1)
-name9 = Members.objects.get(id=9+1)
-name10 = Members.objects.get(id=10+1)
-name11 = Members.objects.get(id=11+1)
-name12 = Members.objects.get(id=12+1)
-name13 = Members.objects.get(id=13+1)
-name14 = Members.objects.get(id=14+1)
-name15 = Members.objects.get(id=15+1)
+# name1 = Members.objects.get(id=1+1)
+name1 = Members.objects.get(id=1)
+name2 = Members.objects.get(id=2)
+name3 = Members.objects.get(id=3)
+name4 = Members.objects.get(id=4)
+name5 = Members.objects.get(id=5)
+name6 = Members.objects.get(id=6)
+name7 = Members.objects.get(id=7)
+name8 = Members.objects.get(id=8)
+name9 = Members.objects.get(id=9)
+name10 = Members.objects.get(id=10)
+name11 = Members.objects.get(id=11)
+name12 = Members.objects.get(id=12)
+name13 = Members.objects.get(id=13)
+name14 = Members.objects.get(id=14)
+name15 = Members.objects.get(id=15)
 # endregion
 
 # region ###################### Personen/Members
