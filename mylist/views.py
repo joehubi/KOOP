@@ -94,12 +94,14 @@ def konto_add(request):
     print('Load:', nameNr.nr_save)
 
     if nameNr.nr_save == 0:
-        ActItems = Konto.objects.all()
+        all_items = Konto.objects.all()
+        Aktueller_Name = ""
     else:
-        ActItems = Konto.objects.filter(nr = nameNr.nr_save).order_by('-created_at')
+        all_items = Konto.objects.filter(nr = nameNr.nr_save).order_by('-created_at')
+        Aktueller_Name = Members.objects.filter(name_nr=nameNr.nr_save).values('name').first()['name']
 
     # Summe der cashflow-Spalte berechnen
-    summe_cashflow = ActItems.aggregate(Sum('cashflow'))['cashflow__sum']                  
+    summe_cashflow = all_items.aggregate(Sum('cashflow'))['cashflow__sum']                  
 
     if summe_cashflow is not None:
         eintrag = Save.objects.get(id=1)    
@@ -113,7 +115,7 @@ def konto_add(request):
     memberdaten = Members.objects.all()
 
     # passing the data to the HTML
-    return render(request, 'Koop_konto.html', {'all_items': ActItems, 'all_saves': all_Saves, 'memberdaten': memberdaten})
+    return render(request, 'Koop_konto.html', {'all_items': all_items, 'all_saves': all_Saves, 'memberdaten': memberdaten, 'Aktueller_Name': Aktueller_Name})
 
 def konto_add2(request):
 
@@ -121,9 +123,10 @@ def konto_add2(request):
         Konto.objects.create(name = request.POST['itemName'], cashflow = request.POST['itemAmount'], nr = request.POST['itemNr'], comment = request.POST['itemComment'])
         printname = request.POST['itemName'] + '---' + request.POST['itemAmount'] + ' €' + '--- [' + request.POST['itemNr'] + ' ]' + ' [' + request.POST['itemComment'] + ' ]'
         print('Betrag hinzufügen:', printname)
-    ActItems = Konto.objects.all()
+    all_items = Konto.objects.all()
     all_Saves = Save.objects.all()
-    return render(request, 'Koop_konto.html', {'all_items': ActItems, 'all_saves': all_Saves})
+
+    return render(request, 'Koop_konto.html', {'all_items': all_items, 'all_saves': all_Saves})
 # endregion
 
 # region ###################### Einkauf/Person 

@@ -17,7 +17,7 @@
                 font-family: 'Open Sans', sans-serif;
                 background-color: #ffffff;
                 display: flex;
-                padding-left: 20px;
+                padding-left: 10px;
                 box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
             } 
         </style>
@@ -28,7 +28,7 @@
         <h1> Aktueller Kontostand: </h1>
         <h1> &nbsp; </h1>
         <h1 style="color: {% if all_saves.0.sum_save < 0 %}red{% else %}black{% endif %};">
-           {{ all_saves.0.sum_save|floatformat:2 }} € - 
+           {{ all_saves.0.sum_save|floatformat:2 }} € <br> {{ Aktueller_Name }}
         </h1>
     </header>
 
@@ -45,7 +45,7 @@
     <table id="einkaufsliste">
         <thead>
             <tr>
-                <th>Nr.</th>
+                <th>ID</th>
                 <th>Datum</th>
                 <th>Nr</th>
                 <th>Betrag</th>
