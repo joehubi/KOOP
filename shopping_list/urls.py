@@ -118,7 +118,7 @@ urlpatterns = [
     path('Order/add/', order_add),
 
     path('Konto/add/', konto_add),
-    path('Konto/add2/', konto_add2),
+    # path('Konto/add2/', konto_add2),
 
     path('koop_price_1/', Koop_view_price_1),
     path('koop_price_2/', Koop_view_price_2),

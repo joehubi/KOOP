@@ -28,7 +28,7 @@
         <h1> Aktueller Kontostand: </h1>
         <h1> &nbsp; </h1>
         <h1 style="color: {% if all_saves.0.sum_save < 0 %}red{% else %}black{% endif %};">
-           {{ all_saves.0.sum_save|floatformat:2 }} €
+           {{ all_saves.0.sum_save|floatformat:2 }} € - 
         </h1>
     </header>
 
@@ -90,54 +90,17 @@
             // JavaScript-Code, um die ausgewählte Nummer anzuzeigen
             var dropdown = document.getElementById("namenListe");
 
-            addy(dropdown.value)
+            Konto_Ansicht_aktu(dropdown.value)
             delay_reload(1000)           
         }
 
-        function addy(nameNr) {
+        function Konto_Ansicht_aktu(nameNr) {
         
             let formData = new FormData();
             formData.append('nameNr', nameNr);       
             formData.append('csrfmiddlewaretoken', token);
 
             fetch(('/Konto/add/'),{
-                method: 'POST',
-                body: formData
-            });
-        }
-
-        function KontoAdd() {
-            let nameNr = dropdown.value
-            if (nameNr === null || nameNr < 1) {
-                return;
-            }  
-
-            var selectElement = document.getElementById("namenListe");
-            var selectedOption = selectElement.options[selectElement.selectedIndex];
-            var selectedText = selectedOption.text;
-            let itemName = selectedText
-            if (itemName === null) {
-                return;
-            }
-            let itemAmount = prompt('Betrag [€]')
-            if (itemAmount === null) {
-                return;
-            } 
-
-            // Das Input-Element anhand seiner ID abrufen
-            var inputElement = document.getElementById("comment");
-            // Den Textwert aus dem Input-Element abrufen
-            var textValue = inputElement.value;
-            let itemComment = textValue;
-
-            let formData = new FormData();
-            formData.append('itemName', itemName);
-            formData.append('itemAmount', itemAmount); 
-            formData.append('itemNr', nameNr);
-            formData.append('itemComment', itemComment);             
-            formData.append('csrfmiddlewaretoken', token);
-
-            fetch(('/Konto/add2/'),{
                 method: 'POST',
                 body: formData
             });

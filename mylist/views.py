@@ -97,7 +97,7 @@ def konto_add(request):
         ActItems = Konto.objects.all()
     else:
         ActItems = Konto.objects.filter(nr = nameNr.nr_save).order_by('-created_at')
-    
+
     # Summe der cashflow-Spalte berechnen
     summe_cashflow = ActItems.aggregate(Sum('cashflow'))['cashflow__sum']                  
 
@@ -156,7 +156,6 @@ def add_person(request, person_id):
     preise_sonstiges    = PriceList.objects.filter(category="Sonstiges").order_by('name')
 
     member = Members.objects.get(id=person_id)
-    # member = Members.objects.get(id=person_id+1)
     page_membername = member.name   # Übergibt die Werte an die HTML
     page_color = member.color       # Übergibt die Werte an die HTML
     page_sum = member.sum           # Übergibt die Werte an die HTML
@@ -181,8 +180,7 @@ def sum_person(request, person_id):
         gesamte_euro_summe = sum(entry.price * entry.amount for entry in alle_eintraege)
         gesamte_euro_summe = round(gesamte_euro_summe, 2)
         print('Summe:', gesamte_euro_summe)
-        eintrag = Members.objects.get(id=person_id)   # Referenz zur Member-Datenbank
-        # eintrag = Members.objects.get(id=person_id+1)   # Referenz zur Member-Datenbank
+        eintrag = Members.objects.get(id=person_id)     # Referenz zur Member-Datenbank
         eintrag.sum = gesamte_euro_summe                # Summe holen
         eintrag.save()                                  # Änderungen in Member-Datenbank speichern
 

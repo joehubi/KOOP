@@ -108,11 +108,14 @@ class WarenlisteAdmin(admin.ModelAdmin):
 class PriceListAdmin(admin.ModelAdmin):
     actions = [STATUS_TRUE, STATUS_FALSE, DELETE]
     list_display = ('id', 'status', 'name', 'price', 'type', 'category')
+
+class MemberAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name_nr', 'name', 'color', 'sum')
 # endregion
 
 # region ################# Register models
 admin.site.register(PriceList, PriceListAdmin)
-admin.site.register(Members)
+admin.site.register(Members, MemberAdmin)
 admin.site.register(Konto, KontoAdmin)
 admin.site.register(Save)
 admin.site.register(Warenliste, WarenlisteAdmin)

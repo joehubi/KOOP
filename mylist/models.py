@@ -74,9 +74,10 @@ class Save(models.Model):
 # Definiert wie ein Member-Eintrag auszusehen hat.
 # Empfehlung color: Google Color picker
 class Members(models.Model):
-    name = models.CharField(max_length=200)
-    color = models.CharField(max_length=10)
-    sum = models.FloatField(default=0)
+    name    = models.CharField(max_length=200)
+    color   = models.CharField(max_length=10)
+    sum     = models.FloatField(default=0)
+    name_nr = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.id) + ' - ' + self.name + ' - ' + self.color + ' - ' + str(self.sum)
@@ -124,43 +125,39 @@ class Warenliste(models.Model):
 
 # Am Anfang bei Einrichtung der Datenbank/Django einkommentieren
 
-# class _members:
-#     name = "..."
-
-# name1 = _members()
-# name2 = _members()
-# name3 = _members()
-# name4 = _members()
-# name5 = _members()
-# name6 = _members()
-# name7 = _members()
-# name8 = _members()
-# name9 = _members()
-# name10 = _members()
-# name11 = _members()
-# name12 = _members()
-# name13 = _members()
-# name14 = _members()
-# name15 = _members()
+name1 = 'Huber/Hoffmann'
+name2 = 'Teßmann'
+name3 = 'Wenninger/Fiedler'
+name4 = 'Sonja Gartner'
+name5 = 'Hildegund & Osi'
+name6 = 'Sarita Schwerla'
+name7 = 'Laux'
+name8 = 'Klaus Plessner'
+name9 = '-'
+name10 = 'Susanne Zehetmeier'
+name11 = 'Nora Siebels'
+name12 = 'Schürkämper'
+name13 = 'Gabi Mitschka'
+name14 = 'Fritz Spörl'
+name15 = '-'
 
 # Am Anfang bei Einrichtung der Datenbank/Django auskommentieren
 # Das ist leider notwendig, da dieser Code zu einem Fehler führt, solange die DB nicht vorhanden ist.
-# name1 = Members.objects.get(id=1+1)
-name1 = Members.objects.get(id=1)
-name2 = Members.objects.get(id=2)
-name3 = Members.objects.get(id=3)
-name4 = Members.objects.get(id=4)
-name5 = Members.objects.get(id=5)
-name6 = Members.objects.get(id=6)
-name7 = Members.objects.get(id=7)
-name8 = Members.objects.get(id=8)
-name9 = Members.objects.get(id=9)
-name10 = Members.objects.get(id=10)
-name11 = Members.objects.get(id=11)
-name12 = Members.objects.get(id=12)
-name13 = Members.objects.get(id=13)
-name14 = Members.objects.get(id=14)
-name15 = Members.objects.get(id=15)
+# name1 = Members.objects.get(id=1)
+# name2 = Members.objects.get(id=2)
+# name3 = Members.objects.get(id=3)
+# name4 = Members.objects.get(id=4)
+# name5 = Members.objects.get(id=5)
+# name6 = Members.objects.get(id=6)
+# name7 = Members.objects.get(id=7)
+# name8 = Members.objects.get(id=8)
+# name9 = Members.objects.get(id=9)
+# name10 = Members.objects.get(id=10)
+# name11 = Members.objects.get(id=11)
+# name12 = Members.objects.get(id=12)
+# name13 = Members.objects.get(id=13)
+# name14 = Members.objects.get(id=14)
+# name15 = Members.objects.get(id=15)
 # endregion
 
 # region ###################### Personen/Members
@@ -168,92 +165,92 @@ name15 = Members.objects.get(id=15)
 class Person1(Person):
     class Meta:
         db_table = 'mylist_person1'
-        verbose_name = f'[1] {name1.name}'
-        verbose_name_plural =  f'[1] {name1.name}'
+        verbose_name = f'[1] {name1}'
+        verbose_name_plural =  f'[1] {name1}'
 
 class Person2(Person):
     class Meta:
         db_table = 'mylist_person2'
-        verbose_name = f'[2] {name2.name}'
-        verbose_name_plural =  f'[2] {name2.name}'
+        verbose_name = f'[2] {name2}'
+        verbose_name_plural =  f'[2] {name2}'
 
 class Person3(Person):
     class Meta:
         db_table = 'mylist_person3'
-        verbose_name = f'[3] {name3.name}'
-        verbose_name_plural =  f'[3] {name3.name}'
+        verbose_name = f'[3] {name3}'
+        verbose_name_plural =  f'[3] {name3}'
       
 class Person4(Person):
     class Meta:
         db_table = 'mylist_person4'
-        verbose_name = f'[4] {name4.name}'
-        verbose_name_plural =  f'[4] {name4.name}'
+        verbose_name = f'[4] {name4}'
+        verbose_name_plural =  f'[4] {name4}'
       
 class Person5(Person):
     class Meta:
         db_table = 'mylist_person5'
-        verbose_name = f'[5] {name5.name}'
-        verbose_name_plural =  f'[5] {name5.name}'
+        verbose_name = f'[5] {name5}'
+        verbose_name_plural =  f'[5] {name5}'
       
 class Person6(Person):
     class Meta:
         db_table = 'mylist_person6'
-        verbose_name = f'[6] {name6.name}'
-        verbose_name_plural =  f'[6] {name6.name}'
+        verbose_name = f'[6] {name6}'
+        verbose_name_plural =  f'[6] {name6}'
       
 class Person7(Person):
     class Meta:
         db_table = 'mylist_person7'
-        verbose_name = f'[7] {name7.name}'
-        verbose_name_plural =  f'[7] {name7.name}'
+        verbose_name = f'[7] {name7}'
+        verbose_name_plural =  f'[7] {name7}'
       
 class Person8(Person):
     class Meta:
         db_table = 'mylist_person8'
-        verbose_name = f'[8] {name8.name}'
-        verbose_name_plural =  f'[8] {name8.name}'
+        verbose_name = f'[8] {name8}'
+        verbose_name_plural =  f'[8] {name8}'
       
 class Person9(Person):
     class Meta:
         db_table = 'mylist_person9'
-        verbose_name = f'[9] {name9.name}'
-        verbose_name_plural =  f'[9] {name9.name}'
+        verbose_name = f'[9] {name9}'
+        verbose_name_plural =  f'[9] {name9}'
       
 class Person10(Person):
     class Meta:
         db_table = 'mylist_person10'
-        verbose_name = f'[10] {name10.name}'
-        verbose_name_plural =  f'[10] {name10.name}'
+        verbose_name = f'[10] {name10}'
+        verbose_name_plural =  f'[10] {name10}'
       
 class Person11(Person):
     class Meta:
         db_table = 'mylist_person11'
-        verbose_name = f'[11] {name11.name}'
-        verbose_name_plural =  f'[11] {name11.name}'
+        verbose_name = f'[11] {name11}'
+        verbose_name_plural =  f'[11] {name11}'
     
 class Person12(Person):
     class Meta:
         db_table = 'mylist_person12'
-        verbose_name = f'[12] {name12.name}'
-        verbose_name_plural =  f'[12] {name12.name}'
+        verbose_name = f'[12] {name12}'
+        verbose_name_plural =  f'[12] {name12}'
       
 class Person13(Person):
     class Meta:
         db_table = 'mylist_person13'
-        verbose_name = f'[13] {name13.name}'
-        verbose_name_plural =  f'[13] {name13.name}'
+        verbose_name = f'[13] {name13}'
+        verbose_name_plural =  f'[13] {name13}'
       
 class Person14(Person):
     class Meta:
         db_table = 'mylist_person14'
-        verbose_name = f'[14] {name14.name}'
-        verbose_name_plural =  f'[14] {name14.name}'
+        verbose_name = f'[14] {name14}'
+        verbose_name_plural =  f'[14] {name14}'
       
 class Person15(Person):
     class Meta:
         db_table = 'mylist_person15'
-        verbose_name = f'[15] {name15.name}'
-        verbose_name_plural =  f'[15] {name15.name}'
+        verbose_name = f'[15] {name15}'
+        verbose_name_plural =  f'[15] {name15}'
 
 # endregion
 # endregion
