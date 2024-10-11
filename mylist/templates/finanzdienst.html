@@ -29,14 +29,24 @@
         function book_all() {
             // console.log("Hello World");
             
-            let formData = new FormData();
-            formData.append('csrfmiddlewaretoken', token);
+            // Zeigt eine Bestätigungsabfrage an
+            const userConfirmed = confirm("Wollen Sie wirklich fortfahren?");
 
-            fetch(('/finanzdienst/'),{
-                    method: 'POST',
-                    body: formData
+            if (userConfirmed) {
+                let formData = new FormData();
+                formData.append('csrfmiddlewaretoken', token);
+
+                fetch(('/finanzdienst/'),{
+                        method: 'POST',
+                        body: formData
                 });
+                alert("Alle Einkäufe wurden als 'ABGERECHNET' gebucht");
+            } else {
+                alert("Sie haben auf Abbrechen geklickt");
+            }
+
         }
+
     </script>
 
 </body>

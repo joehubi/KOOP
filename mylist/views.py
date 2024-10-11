@@ -27,17 +27,22 @@ from .models import Konto
 from .models import Save
 # endregion
 
+# region ###################### Definitions
+first_person = 1
+last_person = 15
+# endregion
 
 # region ###################### Finanzdienst
 def finanzdienst(request):
 
     if request.method == 'POST':
         print("Alle abrechnen")
-        person_model = get_person_model(1)
 
-        instances = person_model.objects.filter(done=False)
-        instances.update(done=True)
-        
+        for i in range(first_person, last_person): 
+            person_model = get_person_model(i) 
+            instances = person_model.objects.filter(done=False)
+            instances.update(done=True)
+
     return render(request, 'finanzdienst.html', {})
 # endregion
 
