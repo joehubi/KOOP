@@ -22,6 +22,13 @@
 <body>
 
     <button onclick="book_all()">Alle abrechnen</button>&nbsp;&nbsp;
+    <br><br>
+    <div style="text-indent:10px;">Was passiert nach "alle abrechnen":</div>
+    <div style="text-indent:20px;">1. Kein Artikel wird gelöscht</div>
+    <div style="text-indent:20px;">2. Alle Artikel aller Personen verschwinden aus der aktiven Ansicht</div>
+    <div style="text-indent:20px;">3. Die aktuelle Waren-Summe aller Personen ist damit NULL</div>
+    <div style="text-indent:20px;">4. Kategorie/Sortiment in</div>
+    <br>
 
     <script>
         let token = '{{ csrf_token }}';
