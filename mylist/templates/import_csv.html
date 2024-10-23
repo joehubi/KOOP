@@ -21,12 +21,18 @@
 
 <body>
 
+  {% load static %}
+  <img src="{% static 'import.jpg' %}" alt="Import">
+
+  <br>
+
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Importieren</button>
   </form>
-  <br>
+
+
   Die Preislisten für den Import müssen folgenden Aufbau haben:
   <div style="text-indent:10px;">- Anordung</div>
   <div style="text-indent:20px;">1. Artikelnummer</div>
