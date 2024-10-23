@@ -66,22 +66,30 @@
             {% endfor %}
         </select>  
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-        <label for="sel_trockenware">Trockenware</label>&nbsp;&nbsp;
-        <select id="sel_trockenware" name="sel_trockenware" onchange="Wert_aus_Preisliste_holen('sel_trockenware')">
+        <label for="sel_fleisch">Fleisch</label>&nbsp;&nbsp;
+        <select id="sel_fleisch" name="sel_fleisch" onchange="Wert_aus_Preisliste_holen('sel_fleisch')">
             <option value="" selected disabled hidden>Bitte Auswählen</option>
-            {% for row in preise_trockenware %}
+            {% for row in preise_fleisch %}
                 <option value="{{ row.price }}">[{{ row.type }}] {{ row.name }} - {{ row.price }} €</option>
             {% endfor %}
         </select>    
         <br><br>
-        &nbsp; 
-        <label for="sel_sonstiges">Sonstiges</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <select id="sel_sonstiges" name="sel_sonstiges" onchange="Wert_aus_Preisliste_holen('sel_sonstiges')">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        <label for="sel_getraenke">Getränke</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <select id="sel_getraenke" name="sel_getraenke" onchange="Wert_aus_Preisliste_holen('sel_getraenke')">
             <option value="" selected disabled hidden>Bitte Auswählen</option>
-            {% for row in preise_sonstiges %}
+            {% for row in preise_getraenke %}
                 <option value="{{ row.price }}">[{{ row.type }}] {{ row.name }} - {{ row.price }} €</option>
             {% endfor %}
-        </select>    
+        </select>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+        <label for="sel_tiefkuehl">Tiefkühl</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <select id="sel_tiefkuehl" name="sel_tiefkuehl" onchange="Wert_aus_Preisliste_holen('sel_tiefkuehl')">
+            <option value="" selected disabled hidden>Bitte Auswählen</option>
+            {% for row in preise_tiefkuehl %}
+                <option value="{{ row.price }}">[{{ row.type }}] {{ row.name }} - {{ row.price }} €</option>
+            {% endfor %}
+        </select>     
     </form>
     <hr>
     <form onsubmit="eingabe_return(); return false;">
@@ -94,18 +102,15 @@
         &nbsp;&nbsp;&nbsp;
         <label for="preis_manual">Preis in €:</label>
         <input type="number" id="preis_manual" name="stk_kg" step="0.01" min="-100" required>
-
         <input type="submit" class="unvisible">
     </form>
     <br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-    <button onclick="hinzufuegen()">Hinzufügen</button>&nbsp;&nbsp;
-    <button onclick="loeschen()">Löschen</button>&nbsp;&nbsp;
-    <button onclick="Summe()">Summe</button>
-
+    <div style="text-indent:125px;">
+        <button onclick="hinzufuegen()">Hinzufügen</button>&nbsp;&nbsp;
+        <button onclick="loeschen()">Löschen</button>&nbsp;&nbsp;
+        <button onclick="Summe()">Summe</button>
+    </div>
     <hr>
-
     <table id="einkaufsliste">
         <thead>
             <tr>
@@ -202,6 +207,8 @@
 
             document.getElementById("artikel_manual").value = string1[0];   // Artikelname schreiben in Eingabe-Element
             document.getElementById("preis_manual").value = string2[0];     // Preis in Eingabeelement schreiben
+
+            document.getElementById("stk_kg_manual").focus();   // Um die Benutzereingabe zu erleichtern, wird nach dem Auswählen eines Artikels das Mengen-Feld in den Fokus gesetzt
         }
     </script>
 

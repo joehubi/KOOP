@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Finanzdienst</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+        <style>
+            header {
+                font-family: 'Open Sans', sans-serif;
+                background-color: #F1F1F1;
+                display: flex;
+                padding-left: 20px;
+                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+            } 
+        </style>
+    </head>
+
+<body>
+
+    {% load static %}
+    <img src="{% static 'finanzdienst.jpg' %}" alt="Finanzdienst">
+  
+    <br><br>
+    
+    <button onclick="book_all()">Alle abrechnen</button>&nbsp;&nbsp;
+    <br><br>
+    <div style="text-indent:10px;">Was passiert nach "alle abrechnen":</div>
+    <div style="text-indent:20px;">1. Kein Artikel wird gelöscht</div>
+    <div style="text-indent:20px;">2. Alle Artikel aller Personen verschwinden aus der aktiven Ansicht</div>
+    <div style="text-indent:20px;">3. Die aktuelle Waren-Summe aller Personen ist damit NULL</div>
+    <div style="text-indent:20px;">4. Kategorie/Sortiment in</div>
+    <br>
+
+    <script>
+        let token = '{{ csrf_token }}';
+
+        function book_all() {
+            // console.log("Hello World");
+            
+            // Zeigt eine Bestätigungsabfrage an
+            const userConfirmed = confirm("Wollen Sie wirklich fortfahren?");
+
+            if (userConfirmed) {
+                let formData = new FormData();
+                formData.append('csrfmiddlewaretoken', token);
+
+                fetch(('/finanzdienst/'),{
+                        method: 'POST',
+                        body: formData
+                });
+                alert("Alle Einkäufe wurden als 'ABGERECHNET' gebucht");
+            } else {
+                alert("Sie haben auf Abbrechen geklickt");
+            }
+
+        }
+
+    </script>
+
+</body>

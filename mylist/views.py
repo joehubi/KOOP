@@ -4,6 +4,7 @@ from django.db.models import Sum
 import csv
 from .forms import CSVUploadForm
 import re
+from datetime import datetime
 
 from .models import Person1
 from .models import Person2
@@ -27,7 +28,34 @@ from .models import Konto
 from .models import Save
 # endregion
 
+# region ###################### Definitions
+first_person = 1
+last_person = 15
+# endregion
+
+# region ###################### Finanzdienst
+def finanzdienst(request):
+
+    if request.method == 'POST':
+        print("Alle abrechnen")
+
+        for i in range(first_person, last_person): 
+            person_model = get_person_model(i) 
+            instances = person_model.objects.filter(done=False)
+            instances.update(done=True)
+
+    return render(request, 'finanzdienst.html', {})
+# endregion
+
 # region ###################### CSV Import
+def convert_date_format(date_str):
+    try:
+        # Konvertiere das Datum vom Format 'TT.MM.JJJJ' zu 'YYYY-MM-DD'
+        return datetime.strptime(date_str, '%d.%m.%Y').strftime('%Y-%m-%d')
+    except ValueError:
+        # Falls das Datum nicht im erwarteten Format ist, Fehler ausgeben
+        raise ValidationError(f'{date_str} has an invalid format. Please use DD.MM.YYYY format.')
+
 def import_csv(request):
 
     daten1 = PriceList.objects.all().order_by('name')
@@ -41,6 +69,8 @@ def import_csv(request):
             
             for i, row_value in enumerate(csv_data):
 
+                row_value[5] = convert_date_format(row_value[5])    # convert date from .csv to django-timestamp
+
                 # Testausgabe
                 print(f"i = {i}")
                 print(f"Column1 = {row_value[0]}")
@@ -48,10 +78,12 @@ def import_csv(request):
 
                 # Eintrag in Datenbank erstellen aus der .csv-Datei
                 PriceList.objects.create(
-                    name = row_value[0],           # Entsprechend der Anordung in der .csv Datei
-                    price = row_value[1],
-                    type = row_value[2],
-                    category = row_value[3],
+                    article_number = row_value[0],           # Entsprechend der Anordung in der .csv Datei
+                    category = row_value[1],
+                    name = row_value[2],
+                    price = row_value[3],
+                    type = row_value[4],
+                    delivery_date = row_value[5],
                 )
 
     else:
@@ -75,12 +107,14 @@ def konto_add(request):
     print('Load:', nameNr.nr_save)
 
     if nameNr.nr_save == 0:
-        ActItems = Konto.objects.all()
+        all_items = Konto.objects.all()
+        Aktueller_Name = ""
     else:
-        ActItems = Konto.objects.filter(nr = nameNr.nr_save).order_by('-created_at')
-    
+        all_items = Konto.objects.filter(nr = nameNr.nr_save).order_by('-created_at')
+        Aktueller_Name = Members.objects.filter(name_nr=nameNr.nr_save).values('name').first()['name']
+
     # Summe der cashflow-Spalte berechnen
-    summe_cashflow = ActItems.aggregate(Sum('cashflow'))['cashflow__sum']                  
+    summe_cashflow = all_items.aggregate(Sum('cashflow'))['cashflow__sum']                  
 
     if summe_cashflow is not None:
         eintrag = Save.objects.get(id=1)    
@@ -94,7 +128,7 @@ def konto_add(request):
     memberdaten = Members.objects.all()
 
     # passing the data to the HTML
-    return render(request, 'Koop_konto.html', {'all_items': ActItems, 'all_saves': all_Saves, 'memberdaten': memberdaten})
+    return render(request, 'Koop_konto.html', {'all_items': all_items, 'all_saves': all_Saves, 'memberdaten': memberdaten, 'Aktueller_Name': Aktueller_Name})
 
 def konto_add2(request):
 
@@ -102,9 +136,10 @@ def konto_add2(request):
         Konto.objects.create(name = request.POST['itemName'], cashflow = request.POST['itemAmount'], nr = request.POST['itemNr'], comment = request.POST['itemComment'])
         printname = request.POST['itemName'] + '---' + request.POST['itemAmount'] + ' €' + '--- [' + request.POST['itemNr'] + ' ]' + ' [' + request.POST['itemComment'] + ' ]'
         print('Betrag hinzufügen:', printname)
-    ActItems = Konto.objects.all()
+    all_items = Konto.objects.all()
     all_Saves = Save.objects.all()
-    return render(request, 'Koop_konto.html', {'all_items': ActItems, 'all_saves': all_Saves})
+
+    return render(request, 'Koop_konto.html', {'all_items': all_items, 'all_saves': all_Saves})
 # endregion
 
 # region ###################### Einkauf/Person 
@@ -113,9 +148,9 @@ def konto_add2(request):
 # Artikel hinzufügen/einkaufen
 def add_person(request, person_id):
     if request.method == 'POST':
-        name = request.POST['itemName']
-        amount = request.POST['itemAmount']
-        price = request.POST['itemPrice']
+        name    = request.POST['itemName']
+        amount  = request.POST['itemAmount']
+        price   = request.POST['itemPrice']
         
         # Erstellen Sie das Person-Objekt basierend auf der übergebenen Personen-ID
         person_model = get_person_model(person_id)
@@ -129,19 +164,21 @@ def add_person(request, person_id):
     all_items = get_person_model(person_id).objects.filter(done=False).order_by('-id')
     
     all_members = Members.objects.all()
-    preise_frischware = PriceList.objects.filter(category="Frischware").order_by('name')
-    preise_obst = PriceList.objects.filter(category="Obst").order_by('name')
-    preise_gemuese = PriceList.objects.filter(category="Gemüse").order_by('name')
-    preise_trockenware = PriceList.objects.filter(category="Trockenware").order_by('name')
-    preise_sonstiges = PriceList.objects.filter(category="Sonstiges").order_by('name')
 
-    member = Members.objects.get(id=person_id+1)
+    preise_frischware   = PriceList.objects.filter(category="Frischwaren", status=True).order_by('name')
+    preise_obst         = PriceList.objects.filter(category="Obst", status=True).order_by('name')
+    preise_gemuese      = PriceList.objects.filter(category="Gemüse", status=True).order_by('name')
+    preise_fleisch      = PriceList.objects.filter(category="Fleisch", status=True).order_by('name')
+    preise_getraenke    = PriceList.objects.filter(category="Getränke", status=True).order_by('name')
+    preise_tiefkuehl    = PriceList.objects.filter(category="Tiefkühl", status=True).order_by('name')
+
+    member = Members.objects.get(id=person_id)
     page_membername = member.name   # Übergibt die Werte an die HTML
     page_color = member.color       # Übergibt die Werte an die HTML
     page_sum = member.sum           # Übergibt die Werte an die HTML
     Nr_id = person_id               # Übergibt die Werte an die HTML
 
-    return render(request, f'koop_{person_id}.html', {'all_items': all_items, 'all_members': all_members, 'page_membername': page_membername, 'page_color': page_color, 'page_sum': page_sum, 'Nr_id': Nr_id, 'preise_frischware': preise_frischware, 'preise_obst': preise_obst, 'preise_gemuese': preise_gemuese, 'preise_trockenware': preise_trockenware, 'preise_sonstiges': preise_sonstiges})
+    return render(request, f'koop_{person_id}.html', {'all_items': all_items, 'all_members': all_members, 'page_membername': page_membername, 'page_color': page_color, 'page_sum': page_sum, 'Nr_id': Nr_id, 'preise_frischware': preise_frischware, 'preise_obst': preise_obst, 'preise_gemuese': preise_gemuese, 'preise_fleisch': preise_fleisch, 'preise_getraenke': preise_getraenke, 'preise_tiefkuehl': preise_tiefkuehl})
 
 # Löschen eines Einkaufs/Artikels aus der Liste
 def delete_person(request, person_id):
@@ -160,7 +197,7 @@ def sum_person(request, person_id):
         gesamte_euro_summe = sum(entry.price * entry.amount for entry in alle_eintraege)
         gesamte_euro_summe = round(gesamte_euro_summe, 2)
         print('Summe:', gesamte_euro_summe)
-        eintrag = Members.objects.get(id=person_id+1)   # Referenz zur Member-Datenbank
+        eintrag = Members.objects.get(id=person_id)     # Referenz zur Member-Datenbank
         eintrag.sum = gesamte_euro_summe                # Summe holen
         eintrag.save()                                  # Änderungen in Member-Datenbank speichern
 

@@ -21,32 +21,44 @@
 
 <body>
 
+  {% load static %}
+  <img src="{% static 'import.jpg' %}" alt="Import">
+
+  <br>
+
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Importieren</button>
   </form>
-  <br>
+
+
   Die Preislisten für den Import müssen folgenden Aufbau haben:
   <div style="text-indent:10px;">- Anordung</div>
-  <div style="text-indent:20px;">1. Artikelname</div>
-  <div style="text-indent:20px;">2. Preis in €;</div>
-  <div style="text-indent:20px;">3. Typ in kg oder Stk</div>
-  <div style="text-indent:20px;">4. Kategorie/Sortiment in</div>
+  <div style="text-indent:20px;">1. Artikelnummer</div>
+  <div style="text-indent:20px;">2. Kategorie/Sortiment</div>
   <div style="text-indent:30px;">- Obst</div>
   <div style="text-indent:30px;">- Gemüse</div>
   <div style="text-indent:30px;">- Frischware</div>
   <div style="text-indent:30px;">- Sonstiges</div>
   <div style="text-indent:30px;">- Trockenware</div>
+  <div style="text-indent:20px;">3. Artikelname</div>
+  <div style="text-indent:20px;">4. Preis [€]</div>
+  <div style="text-indent:20px;">5. Typ [kg/Stk]</div>
   <div style="text-indent:10px;">- Separator = ";"</div>
   <br>
   z.B.
   <br><br>
-  Birnen;1.1;kg;Obst<br>
-  Äpfel;0.85;kg;Obst<br>
-  Orangen;1.2;kg;Obst<br>
-  Kirschen;1.8;kg;Obst<br>
-  Zitronen;2.95;kg;Obst<br>
-  Saftorangen;0.5;kg;Obst<br>
+  153060;Obst;Anbruch   Bananen           DO;2.5;Kg<br>
+  152049;Obst;Apfel Elstar Franken    BY;3.8;Kg<br>
+  152022;Obst;Apfel Santana  Franken  BY;3.5;Kg<br>
+  153040;Obst;Bananen             EC;2.7;Kg<br>
+  153314;Obst;Birne Abate 60/65           IT;4;Kg<br>
+  158413;Obst;Granatäpfel Acco 14er       ES;1.4;Stk<br>
+  158430;Obst;Kaki  Tone Wase 22-28       ES;6.3;Kg<br>
+  156052;Obst;Mango Osteen   12er         ES;2.1;Stk<br>
+  180040;Obst;Medjool Datteln  1kg        IL;16.9;Kg<br>
+  155672;Obst;Trauben Crimson rot kernlos IT;6.6;Kg<br>
+  159020;Obst;Zitronen grün 3-5           IT;3.7;Kg<br>
 
 </body>

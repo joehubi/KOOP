@@ -24,6 +24,7 @@ from mylist.views import order_add
 from mylist.views import import_csv
 from mylist.views import konto_add
 from mylist.views import konto_add2
+from mylist.views import finanzdienst
 
 from mylist.views import Koop_view_price_1
 from mylist.views import Koop_view_price_2
@@ -112,6 +113,7 @@ urlpatterns = [
 
     path('Testing/add/', Testing_add),
     path('import/', import_csv),
+    path('finanzdienst/', finanzdienst),
 
     path('Order/add/', order_add),
 

@@ -17,7 +17,7 @@
                 font-family: 'Open Sans', sans-serif;
                 background-color: #ffffff;
                 display: flex;
-                padding-left: 20px;
+                padding-left: 10px;
                 box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
             } 
         </style>
@@ -28,13 +28,14 @@
         <h1> Aktueller Kontostand: </h1>
         <h1> &nbsp; </h1>
         <h1 style="color: {% if all_saves.0.sum_save < 0 %}red{% else %}black{% endif %};">
-           {{ all_saves.0.sum_save|floatformat:2 }} €
+           {{ all_saves.0.sum_save|floatformat:2 }} € <br> {{ Aktueller_Name }}
         </h1>
     </header>
 
     <form>
         <label for="namenListe">Konto auswählen</label>
-        <select id="namenListe" name="namenListe" onchange="meineFunktion()">
+        <select id="namenListe" name="namenListe" onchange="Konto_anzeigen()">
+            <option value="" selected disabled hidden>Bitte Auswählen</option>
             {% for row in memberdaten %}
                 <option value="{{ row.id }}">{{ row.name }}</option>
             {% endfor %}
@@ -44,7 +45,7 @@
     <table id="einkaufsliste">
         <thead>
             <tr>
-                <th>Nr.</th>
+                <th>ID</th>
                 <th>Datum</th>
                 <th>Nr</th>
                 <th>Betrag</th>
@@ -81,7 +82,7 @@
             }, time);
         }
 
-        function meineFunktion() {
+        function Konto_anzeigen() {
             var selectedIndex = document.getElementById("namenListe").selectedIndex;
             var ausgewaehlterText = document.getElementById("namenListe").options[selectedIndex].text;
             //alert(ausgewaehlterText);
@@ -89,54 +90,17 @@
             // JavaScript-Code, um die ausgewählte Nummer anzuzeigen
             var dropdown = document.getElementById("namenListe");
 
-            addy(dropdown.value - 1)
+            Konto_Ansicht_aktu(dropdown.value)
             delay_reload(1000)           
         }
 
-        function addy(nameNr) {
+        function Konto_Ansicht_aktu(nameNr) {
         
             let formData = new FormData();
             formData.append('nameNr', nameNr);       
             formData.append('csrfmiddlewaretoken', token);
 
             fetch(('/Konto/add/'),{
-                method: 'POST',
-                body: formData
-            });
-        }
-
-        function KontoAdd() {
-            let nameNr = dropdown.value
-            if (nameNr === null || nameNr < 1) {
-                return;
-            }  
-
-            var selectElement = document.getElementById("namenListe");
-            var selectedOption = selectElement.options[selectElement.selectedIndex];
-            var selectedText = selectedOption.text;
-            let itemName = selectedText
-            if (itemName === null) {
-                return;
-            }
-            let itemAmount = prompt('Betrag [€]')
-            if (itemAmount === null) {
-                return;
-            } 
-
-            // Das Input-Element anhand seiner ID abrufen
-            var inputElement = document.getElementById("comment");
-            // Den Textwert aus dem Input-Element abrufen
-            var textValue = inputElement.value;
-            let itemComment = textValue;
-
-            let formData = new FormData();
-            formData.append('itemName', itemName);
-            formData.append('itemAmount', itemAmount); 
-            formData.append('itemNr', nameNr);
-            formData.append('itemComment', itemComment);             
-            formData.append('csrfmiddlewaretoken', token);
-
-            fetch(('/Konto/add2/'),{
                 method: 'POST',
                 body: formData
             });

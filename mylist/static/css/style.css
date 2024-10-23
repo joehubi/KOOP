@@ -1,43 +1,44 @@
 body {
     font-family: 'Open Sans', sans-serif;
-    font-size: 22px;
+    font-size: 20px;
     background-color: rgba(0, 0, 0, 0.05);
     margin: 0;
 }
     
 button {
     font-family: 'Open Sans', sans-serif;
-    font-size: 25px;
-    height: 60px;
-    width: 200px;
+    font-size: 25;
+    height: 30px;
+    width: 140px;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 #einkaufsliste {
     font-family: 'Open Sans', sans-serif;
-    font-size: 25px;
+    font-size: 20;
     width: 80%;
     text-align: left;
 }
 
 input[type="text"] {
-    font-size: 33px;        /* Ändere die Schriftgröße nach Bedarf */
-    width: 38%;             /* Fülle die gesamte Breite des Containers aus */
+    font-size: 20px;        /* Ändere die Schriftgröße nach Bedarf */
+    width: 36%;             /* Fülle die gesamte Breite des Containers aus */
     margin-top: 10px;       /* Abstand zwischen den Eingabefeldern */
     margin-bottom: 10px;    /* Abstand zwischen den Eingabefeldern */
     padding: 5px;           /* Innenabstand für bessere Lesbarkeit */
 }
 
 input[type="number"] {
-    font-size: 33px;        /* Ändere die Schriftgröße nach Bedarf */
+    font-size: 20px;        /* Ändere die Schriftgröße nach Bedarf */
     width: 7%;             /* Fülle die gesamte Breite des Containers aus */
     margin-top: 10px;       /* Abstand zwischen den Eingabefeldern */
     margin-bottom: 10px;    /* Abstand zwischen den Eingabefeldern */
     padding: 5px;           /* Innenabstand für bessere Lesbarkeit */
 }
 
-#namenListe, #sel_frischware, #sel_obst, #sel_trockenware, #sel_gemuese, #sel_sonstiges {
-    width: 700px;
-    height: 50px;
-    font-size: 33px;
+#namenListe, #sel_frischware, #sel_obst, #sel_trockenware, #sel_gemuese, #sel_fleisch, #sel_getraenke, #sel_tiefkuehl {
+    width: 500px;
+    height: 30px;
+    font-size: 20px;
 }
+
