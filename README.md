@@ -1,19 +1,9 @@
 # KOOP
 
-## PreInstallation
-
-1. Django installieren:             python -m pip install Django
-2. Projekt "shopping_list" starten  
-        . = im selben Ordner
-        django-admin startproject shopping_list .
-3. App erstellen (erstellt python files)
-        python manage.py startapp mylist
-
-
-## Lokales Repositor erstellen
+## Installation
 
 1. Environment erstellen lassen
-        python -m venv env  
+        python -m venv venv  
 2. Environment aktivieren
         "./env/Scripts/activate"
 3. Django installieren
@@ -31,3 +21,12 @@
 ## HTML
 
 Alle HTML Koop_1.html bis Koop_15.html sind identisch!!!!
+
+## Allgemein Django Projekt erstellen
+
+1. Django installieren:             python -m pip install Django
+2. Projekt "shopping_list" starten  
+        . = im selben Ordner
+        django-admin startproject shopping_list .
+3. App erstellen (erstellt python files)
+        python manage.py startapp mylist
