@@ -48,10 +48,14 @@ def finanzdienst(request):
     return render(request, 'finanzdienst.html', {})
 
 def pay_rent(request):
-    MIETE = 16.0  # Konstante Miete pro Person
 
     if request.method == 'POST':
         print("Miete abbuchen")
+
+        # Miete auslesen
+        save_object = Save.objects.get(id=1)
+        miete = save_object.rent_save
+        print(f"Miete ({miete} €) pro Person abbuchen")
 
         # Alle Members mit allen Feldern holen
         members = list(Members.objects.values('name_nr', 'persons'))
@@ -66,13 +70,14 @@ def pay_rent(request):
         else:
             print("Alle name_nr-Werte sind eindeutig.")
 
-        # Für jeden Member cashflow berechnen und Konto-Eintrag erstellen
-        for member in members:
-            nr = member['name_nr']
-            persons = member['persons']
-            cashflow = MIETE * persons
-            print(f'Miete abbuchen für: {nr} ({persons} Personen, cashflow={cashflow})')
-            Konto.objects.create(name='Miete', cashflow=-cashflow, nr=nr, comment='Monatliche Miete')
+            # Für jeden Member cashflow berechnen und Konto-Eintrag erstellen
+            for member in members:
+                nr = member['name_nr']
+                persons = member['persons']
+                miete_total_persons = miete * persons
+                print(f'Miete abbuchen für: {nr} ({persons} Personen, cashflow={miete_total_persons})')
+                Konto.objects.create(cashflow=(-miete_total_persons), nr=nr, comment='Miete')
+            print("Alle Miete-Einträge wurden erfolgreich erstellt.")
 
     return render(request, 'finanzdienst.html', {})
 # endregion
