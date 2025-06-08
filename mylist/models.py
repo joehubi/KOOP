@@ -53,7 +53,7 @@ class Konto(models.Model):
         (6, '[6] Sarita Schwerla'),
         (7, '[7] Laux'),
         (8, '[8] Klaus Plessner'),
-        (9, '[9] -'),
+        (9, '[9] Koller'),
         (10,'[10] Susanne Zehetmeier'),
         (11,'[11] Nora Siebels'),
         (12,'[12] Schürkämper'),
@@ -151,7 +151,7 @@ name5 = 'Hildegund & Osi'
 name6 = 'Sarita Schwerla'
 name7 = 'Laux'
 name8 = 'Klaus Plessner'
-name9 = '-'
+name9 = 'Koller'
 name10 = 'Susanne Zehetmeier'
 name11 = 'Nora Siebels'
 name12 = 'Schürkämper'
@@ -161,21 +161,21 @@ name15 = '-'
 
 # Am Anfang bei Einrichtung der Datenbank/Django auskommentieren
 # Das ist leider notwendig, da dieser Code zu einem Fehler führt, solange die DB nicht vorhanden ist.
-# name1 = Members.objects.get(id=1)
-# name2 = Members.objects.get(id=2)
-# name3 = Members.objects.get(id=3)
-# name4 = Members.objects.get(id=4)
-# name5 = Members.objects.get(id=5)
-# name6 = Members.objects.get(id=6)
-# name7 = Members.objects.get(id=7)
-# name8 = Members.objects.get(id=8)
-# name9 = Members.objects.get(id=9)
-# name10 = Members.objects.get(id=10)
-# name11 = Members.objects.get(id=11)
-# name12 = Members.objects.get(id=12)
-# name13 = Members.objects.get(id=13)
-# name14 = Members.objects.get(id=14)
-# name15 = Members.objects.get(id=15)
+# name1 = Members.objects.get(name_nr=1)
+# name2 = Members.objects.get(name_nr=2)
+# name3 = Members.objects.get(name_nr=3)
+# name4 = Members.objects.get(name_nr=4)
+# name5 = Members.objects.get(name_nr=5)
+# name6 = Members.objects.get(name_nr=6)
+# name7 = Members.objects.get(name_nr=7)
+# name8 = Members.objects.get(name_nr=8)
+# name9 = Members.objects.get(name_nr=9)
+# name10 = Members.objects.get(name_nr=10)
+# name11 = Members.objects.get(name_nr=11)
+# name12 = Members.objects.get(name_nr=12)
+# name13 = Members.objects.get(name_nr=13)
+# name14 = Members.objects.get(name_nr=14)
+# name15 = Members.objects.get(name_nr=15)
 # endregion
 
 # region ###################### Personen/Members

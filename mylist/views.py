@@ -84,6 +84,7 @@ def import_csv(request):
                     price = row_value[3],
                     type = row_value[4],
                     delivery_date = row_value[5],
+                    status = row_value[6],
                 )
 
     else:
@@ -172,7 +173,8 @@ def add_person(request, person_id):
     preise_getraenke    = PriceList.objects.filter(category="Getränke", status=True).order_by('name')
     preise_tiefkuehl    = PriceList.objects.filter(category="Tiefkühl", status=True).order_by('name')
 
-    member = Members.objects.get(id=person_id)
+    #member = Members.objects.get(id=person_id)
+    member = Members.objects.get(name_nr=person_id)
     page_membername = member.name   # Übergibt die Werte an die HTML
     page_color = member.color       # Übergibt die Werte an die HTML
     page_sum = member.sum           # Übergibt die Werte an die HTML
@@ -197,7 +199,7 @@ def sum_person(request, person_id):
         gesamte_euro_summe = sum(entry.price * entry.amount for entry in alle_eintraege)
         gesamte_euro_summe = round(gesamte_euro_summe, 2)
         print('Summe:', gesamte_euro_summe)
-        eintrag = Members.objects.get(id=person_id)     # Referenz zur Member-Datenbank
+        eintrag = Members.objects.get(name_nr=person_id)     # Referenz zur Member-Datenbank
         eintrag.sum = gesamte_euro_summe                # Summe holen
         eintrag.save()                                  # Änderungen in Member-Datenbank speichern
 
