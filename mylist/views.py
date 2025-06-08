@@ -5,6 +5,7 @@ import csv
 from .forms import CSVUploadForm
 import re
 from datetime import datetime
+from collections import Counter
 
 from .models import Person1
 from .models import Person2
@@ -47,16 +48,31 @@ def finanzdienst(request):
     return render(request, 'finanzdienst.html', {})
 
 def pay_rent(request):
+    MIETE = 16.0  # Konstante Miete pro Person
 
     if request.method == 'POST':
         print("Miete abbuchen")
 
-        nr_list = Konto.objects.values_list('nr', flat=True).distinct()
-        print(list(nr_list))
+        # Alle Members mit allen Feldern holen
+        members = list(Members.objects.values('name_nr', 'persons'))
+        print("Alle Members (inkl. Duplikate):", members)
 
-        # all_items = Konto.objects.filter(nr=1)  # Hier wird die Nummer 1 für Miete verwendet
+        # Prüfen, ob name_nr unique ist
+        name_nr_list = [m['name_nr'] for m in members]
+        counter = Counter(name_nr_list)
+        duplicates = [nr for nr, count in counter.items() if count > 1]
+        if duplicates:
+            print(f"Fehler: Die folgenden name_nr-Werte sind nicht eindeutig: {duplicates}")
+        else:
+            print("Alle name_nr-Werte sind eindeutig.")
 
-        # Konto.objects.create(name = request.POST['itemName'], cashflow = request.POST['itemAmount'], nr = request.POST['itemNr'], comment = request.POST['itemComment'])
+        # Für jeden Member cashflow berechnen und Konto-Eintrag erstellen
+        for member in members:
+            nr = member['name_nr']
+            persons = member['persons']
+            cashflow = MIETE * persons
+            print(f'Miete abbuchen für: {nr} ({persons} Personen, cashflow={cashflow})')
+            Konto.objects.create(name='Miete', cashflow=-cashflow, nr=nr, comment='Monatliche Miete')
 
     return render(request, 'finanzdienst.html', {})
 # endregion
@@ -68,7 +84,8 @@ def convert_date_format(date_str):
         return datetime.strptime(date_str, '%d.%m.%Y').strftime('%Y-%m-%d')
     except ValueError:
         # Falls das Datum nicht im erwarteten Format ist, Fehler ausgeben
-        raise ValidationError(f'{date_str} has an invalid format. Please use DD.MM.YYYY format.')
+        print(f'{date_str} has an invalid format. Please use DD.MM.YYYY format.')
+        raise Exception(f'Invalid date format: {date_str}')
 
 def import_csv(request):
 

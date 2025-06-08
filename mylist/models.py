@@ -42,7 +42,7 @@ class PriceList(models.Model):
 class Konto(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     date = models.DateField(default=datetime.date.today)  # Datum des Eintrags
-    # nr = models.IntegerField(default=0)
+    nr = models.IntegerField(default=0)
 
     NAME_CHOICES = (
         (0, '-'),
@@ -62,9 +62,8 @@ class Konto(models.Model):
         (14,'[14] Fritz Spörl'),
     )
     
-    # nr = models.IntegerField(choices=NAME_CHOICES, default=0)
-    nr = models.IntegerField(choices=NAME_CHOICES, default=0, unique=True)
-    
+    nr = models.IntegerField(choices=NAME_CHOICES, default=0)
+
     cashflow = models.FloatField(default=0)
 
     COMMENT_CHOICES = (
@@ -97,7 +96,7 @@ class Members(models.Model):
     name    = models.CharField(max_length=200)
     color   = models.CharField(max_length=10)
     sum     = models.FloatField(default=0)
-    name_nr = models.IntegerField(default=0)
+    name_nr = models.IntegerField(default=0, unique=True)  # Nummer des Members, damit es in der DB eindeutig ist
     persons = models.IntegerField(default=1)  # Anzahl der Personen, die zu diesem Member gehören
 
     def __str__(self):
