@@ -110,7 +110,7 @@ class PriceListAdmin(admin.ModelAdmin):
     list_display = ('id','article_number' ,'delivery_date', 'status', 'name', 'price', 'type', 'category', 'created_at')
 
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name_nr', 'name', 'color', 'sum')
+    list_display = ('id', 'name_nr', 'name', 'persons', 'color', 'sum')
 # endregion
 
 # region Register models

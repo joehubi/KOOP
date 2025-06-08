@@ -96,9 +96,10 @@ class Members(models.Model):
     color   = models.CharField(max_length=10)
     sum     = models.FloatField(default=0)
     name_nr = models.IntegerField(default=0)
+    persons = models.IntegerField(default=1)  # Anzahl der Personen, die zu diesem Member gehören
 
     def __str__(self):
-        return str(self.id) + ' - ' + self.name + ' - ' + self.color + ' - ' + str(self.sum)
+        return str(self.id) + ' - ' + self.name + '-' + str(self.persons) + ' - ' + self.color + ' - ' + str(self.sum)
 # endregion 
 
 # region Person/Einkauf
