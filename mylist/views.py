@@ -45,6 +45,13 @@ def finanzdienst(request):
             instances.update(done=True)
 
     return render(request, 'finanzdienst.html', {})
+
+def pay_rent(request):
+
+    if request.method == 'POST':
+        print("Miete abbuchen")
+
+    return render(request, 'finanzdienst.html', {})
 # endregion
 
 # region CSV Import

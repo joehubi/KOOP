@@ -94,11 +94,11 @@
                 let formData = new FormData();
                 formData.append('csrfmiddlewaretoken', token);
 
-                fetch(('/finanzdienst/'),{
+                fetch(('/finanzdienst/pay_rent'),{
                         method: 'POST',
                         body: formData
                 });
-                alert("Alle Einkäufe wurden als 'ABGERECHNET' gebucht");
+                alert("Miete wurde abgebucht");
             } else {
                 alert("Sie haben auf Abbrechen geklickt");
             }
