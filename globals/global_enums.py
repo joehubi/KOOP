@@ -26,3 +26,4 @@ class MemberEnum(Enum):
     @property
     def name(self):
         return self.value[1]
+

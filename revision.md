@@ -1,3 +1,10 @@
+### 08.06.2025
+- HTML mit Klonen-Skript
+- Enums für Memberinformationen
+- Personenanzahl in Datenbank (bei Members)
+- Miete in Datenbank (Save-Objekt)
+- Startserver .bat
+
 ### 01.10.2024
 - Kommentare und Kapitel hinzugefügt
 - Revisionierung jetzt auf github (https://github.com/joehubi/KOOP.git)

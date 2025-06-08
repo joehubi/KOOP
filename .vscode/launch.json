@@ -2,6 +2,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "HTML Dateien erzeugen aus Vorlage",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/html/create_html_clones.py",
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/venv/Scripts/python.exe",
+            "env": {},
+            "justMyCode": true
+        },
+        {
             "name": "Django - makemigrations",
             "type": "debugpy",
             "request": "launch",
@@ -50,6 +60,6 @@
             "python": "${workspaceFolder}/venv/Scripts/python.exe",
             "env": {},
             "justMyCode": true
-        }
+        },
     ]
 }
