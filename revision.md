@@ -4,6 +4,8 @@
 - Personenanzahl in Datenbank (bei Members)
 - Miete in Datenbank (Save-Objekt)
 - Startserver .bat
+- Pfand Button
+- Änderungen im Artikeltext (typ: Stk/kg jetzt am Ende des Textes)
 
 ### 01.10.2024
 - Kommentare und Kapitel hinzugefügt
