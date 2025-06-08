@@ -84,9 +84,10 @@ class Konto(models.Model):
 class Save(models.Model):
     nr_save = models.IntegerField(default=0)
     sum_save = models.FloatField(default=0)
+    rent_save = models.FloatField(default=16)
 
     def __str__(self):
-        return str(self.id) + ' - ' + str(self.nr_save) + ' - ' + str(self.sum_save)
+        return str(self.id) + ' - ' + str(self.nr_save) + ' - ' + str(self.sum_save) + ' - ' + str(self.rent_save)
 # endregion
 
 # region Member Liste

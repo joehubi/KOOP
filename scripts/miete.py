@@ -13,11 +13,12 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'shopping_list.settings')
 import django
 django.setup()
 from collections import Counter
-from mylist.models import Members, Konto
+from mylist.models import Members, Konto, Save
 
-
-MIETE = 16
-print(f"Miete ({MIETE} €) abbuchen")
+# Miete auslesen
+save_object = Save.objects.get(id=1)
+miete = save_object.rent_save
+print(f"Miete ({miete} €) pro Person abbuchen")
 
 # Alle Members mit allen Feldern holen
 members = list(Members.objects.values('name_nr', 'persons'))
@@ -36,7 +37,7 @@ else:
     for member in members:
         nr = member['name_nr']
         persons = member['persons']
-        miete_calc = MIETE * persons
-        print(f'Miete abbuchen für: {nr} ({persons} Personen, cashflow={miete_calc})')
-        Konto.objects.create(cashflow=(-miete_calc), nr=nr, comment='Miete')
+        miete_total_persons = miete * persons
+        print(f'Miete abbuchen für: {nr} ({persons} Personen, cashflow={miete_total_persons})')
+        Konto.objects.create(cashflow=(-miete_total_persons), nr=nr, comment='Miete')
     print("Alle Miete-Einträge wurden erfolgreich erstellt.")
