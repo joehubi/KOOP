@@ -5,7 +5,7 @@
 1. Environment erstellen lassen
         python -m venv venv  
 2. Environment aktivieren
-        "./env/Scripts/activate"
+        "./venv/Scripts/activate"
 3. Django installieren
         pip install Django
 4. Aus den Models den SQL Code erstellen
