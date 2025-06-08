@@ -51,6 +51,13 @@ def pay_rent(request):
     if request.method == 'POST':
         print("Miete abbuchen")
 
+        nr_list = Konto.objects.values_list('nr', flat=True).distinct()
+        print(list(nr_list))
+
+        # all_items = Konto.objects.filter(nr=1)  # Hier wird die Nummer 1 für Miete verwendet
+
+        # Konto.objects.create(name = request.POST['itemName'], cashflow = request.POST['itemAmount'], nr = request.POST['itemNr'], comment = request.POST['itemComment'])
+
     return render(request, 'finanzdienst.html', {})
 # endregion
 

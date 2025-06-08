@@ -1,6 +1,6 @@
 # region IMPORT
 from django.db import models
-#from datetime import datetime 
+import datetime 
 # endregion
 
 # region Preisliste
@@ -41,7 +41,8 @@ class PriceList(models.Model):
 
 class Konto(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    nr = models.IntegerField(default=0)
+    date = models.DateField(default=datetime.date.today)  # Datum des Eintrags
+    # nr = models.IntegerField(default=0)
 
     NAME_CHOICES = (
         (0, '-'),
@@ -61,7 +62,8 @@ class Konto(models.Model):
         (14,'[14] Fritz Spörl'),
     )
     
-    nr = models.IntegerField(choices=NAME_CHOICES, default=0)
+    # nr = models.IntegerField(choices=NAME_CHOICES, default=0)
+    nr = models.IntegerField(choices=NAME_CHOICES, default=0, unique=True)
     
     cashflow = models.FloatField(default=0)
 
@@ -75,7 +77,7 @@ class Konto(models.Model):
     comment2 = models.CharField(max_length=200, default='-')
 
     def __str__(self):
-        return str(self.id) + ' - ' + str(self.created_at) + ' - ' + str(self.nr) + ' (Nr-Name)' + ' - ' + str(self.cashflow) + ' - ' + self.comment + ' - ' + self.comment2
+        return str(self.id) + ' - ' + str(self.created_at) + ' - ' + str(self.nr) + ' (Nr-Name)' + ' - ' + str(self.cashflow) + ' - ' + str(self.date) + ' - ' + self.comment + ' - ' + self.comment2
 # endregion
 
 # region Save
@@ -271,5 +273,4 @@ class Person15(Person):
         verbose_name = f'[15] {name15}'
         verbose_name_plural =  f'[15] {name15}'
 
-# endregion
 # endregion

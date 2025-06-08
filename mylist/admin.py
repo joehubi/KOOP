@@ -100,7 +100,7 @@ class Person15Admin(admin.ModelAdmin):
     list_display = ('id', 'done', 'created_at', 'name', 'amount','price')
 
 class KontoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nr', 'created_at', 'cashflow', 'comment','comment2')
+    list_display = ('id', 'nr', 'created_at', 'cashflow', 'date', 'comment','comment2')
 
 class WarenlisteAdmin(admin.ModelAdmin):
     list_display = ('id', 'artikelnummer', 'artikelname', 'sortiment', 'artikelname_neu')
