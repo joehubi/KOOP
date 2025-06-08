@@ -179,8 +179,21 @@ def add_person(request, person_id):
     page_color = member.color       # Übergibt die Werte an die HTML
     page_sum = member.sum           # Übergibt die Werte an die HTML
     Nr_id = person_id               # Übergibt die Werte an die HTML
+    page_persons = member.persons
 
-    return render(request, f'koop_{person_id}.html', {'all_items': all_items, 'all_members': all_members, 'page_membername': page_membername, 'page_color': page_color, 'page_sum': page_sum, 'Nr_id': Nr_id, 'preise_frischware': preise_frischware, 'preise_obst': preise_obst, 'preise_gemuese': preise_gemuese, 'preise_fleisch': preise_fleisch, 'preise_getraenke': preise_getraenke, 'preise_tiefkuehl': preise_tiefkuehl})
+    return render(request, f'koop_{person_id}.html',
+                  {'all_items': all_items,
+                    'all_members': all_members,
+                    'page_membername': page_membername,
+                    'page_persons': page_persons,
+                    'page_color': page_color,
+                    'page_sum': page_sum,
+                    'Nr_id': Nr_id, 'preise_frischware': preise_frischware,
+                    'preise_obst': preise_obst,
+                    'preise_gemuese': preise_gemuese,
+                    'preise_fleisch': preise_fleisch,
+                    'preise_getraenke': preise_getraenke,
+                    'preise_tiefkuehl': preise_tiefkuehl})
 
 # Löschen eines Einkaufs/Artikels aus der Liste
 def delete_person(request, person_id):
