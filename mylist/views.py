@@ -1,4 +1,4 @@
-# region ###################### IMPORT
+# region IMPORT
 from django.shortcuts import render
 from django.db.models import Sum
 import csv
@@ -28,12 +28,12 @@ from .models import Konto
 from .models import Save
 # endregion
 
-# region ###################### Definitions
+# region Definitions
 first_person = 1
 last_person = 15
 # endregion
 
-# region ###################### Finanzdienst
+# region Finanzdienst
 def finanzdienst(request):
 
     if request.method == 'POST':
@@ -47,7 +47,7 @@ def finanzdienst(request):
     return render(request, 'finanzdienst.html', {})
 # endregion
 
-# region ###################### CSV Import
+# region CSV Import
 def convert_date_format(date_str):
     try:
         # Konvertiere das Datum vom Format 'TT.MM.JJJJ' zu 'YYYY-MM-DD'
@@ -93,7 +93,7 @@ def import_csv(request):
     return render(request, 'import_csv.html', {'form': form, 'daten1': daten1, 'daten2': daten2})
 # endregion
 
-# region ###################### Konto
+# region Konto
 # Hier werden Konto-Buchungen definiert. So können Koop-Einzahlungen, Miete etc. erfasst werden. 
 def konto_add(request):
 
@@ -143,7 +143,7 @@ def konto_add2(request):
     return render(request, 'Koop_konto.html', {'all_items': all_items, 'all_saves': all_Saves})
 # endregion
 
-# region ###################### Einkauf/Person 
+# region Einkauf/Person 
 # Hier wird definiert welche Ansichten und Funktionen für einen Einkauf (Person X) zur Verfügung stehen
 
 # Artikel hinzufügen/einkaufen
@@ -206,8 +206,8 @@ def sum_person(request, person_id):
     return render(request, f'koop_{person_id}.html')
 # endregion
 
-# region ###################### Aufruf der Funktionen für einen Einkauf
-# region ###################### Funktion zum Zuordnen der Namen
+# region Aufruf der Funktionen für einen Einkauf
+# region Funktion zum Zuordnen der Namen
 def get_person_model(person_id):
     # Hier können Sie die Zuordnung zwischen Personen-ID und Datenbankmodell implementieren
     # Zum Beispiel: Person 1 -> Person1, Person 2 -> Person2 usw.
@@ -248,7 +248,7 @@ def get_person_model(person_id):
         # Wenn keine Übereinstimmung gefunden wird, können Sie eine Ausnahme auslösen oder ein Standardmodell zurückgeben
         raise ValueError("Ungültige Personen-ID")
 # endregion
-# region ###################### Funktion für View erstellen
+# region Funktion für View erstellen
 # Definiert einen View für jede Person
 def Person_1_add(request):
     return add_person(request, 1)
@@ -387,7 +387,7 @@ def Person_15_sum(request):
 # endregion
 # endregion
 
-# region ###################### !!!NICHT AKTIV!!! Bestellungen
+# region !!!NICHT AKTIV!!! Bestellungen
 # Noch in der Testphase
 def order_add(request):
 
@@ -431,7 +431,7 @@ def order_add(request):
     return render(request, 'Koop_Order.html', {'all_items': ActItems, 'all_saves': all_Saves})
 
 # endregion
-# region ###################### !!!NICHT AKTIV!!! Preisliste
+# region !!!NICHT AKTIV!!! Preisliste
 def Koop_view_price_1(request):
     all_items = PriceList.objects.filter(category='Sonstige')
     all_items = all_items.order_by('name')
@@ -457,7 +457,7 @@ def Koop_view_price_5(request):
     all_items = all_items.order_by('category', 'name')
     return render(request, 'koop_price_5.html', {'all_items': all_items})
 # endregion
-# region ###################### !!!NICHT AKTIV!!! Personen
+# region !!!NICHT AKTIV!!! Personen
 def add_person_smart(request, person_id):
     if request.method == 'POST':
         entry = PriceList.objects.get(id=request.POST['itemNumber'])
@@ -471,7 +471,7 @@ def add_person_smart(request, person_id):
     
     return render(request, f'koop_{person_id}.html')
 #endregion
-# region ###################### Debugging/Testing
+# region Debugging/Testing
 # just for testing
 def Testing_add(request):
     if request.method == 'POST':

@@ -1,9 +1,9 @@
-# region ###################### IMPORT
+# region IMPORT
 from django.db import models
 #from datetime import datetime 
 # endregion
 
-# region ###################### Preisliste
+# region Preisliste
 # Modell für die Preislisten. Wird noch nicht aktiv verwendet
 
 class PriceList(models.Model):
@@ -35,7 +35,7 @@ class PriceList(models.Model):
         return  str(self.status) + ' - ' + str(self.id) + ' - ' + self.name + ' - ' + str(self.price) + ' - ' + self.type + ' - ' + self.category
 # endregion
 
-# region ###################### Konto
+# region Konto
 # Definiert einen Konto-Eintrag.
 # Die Namensliste zur Bearbeitung in der ADMIN-Ansicht ist hier lokal definiert. Das ist noch ein nachteil im Code.
 
@@ -78,7 +78,7 @@ class Konto(models.Model):
         return str(self.id) + ' - ' + str(self.created_at) + ' - ' + str(self.nr) + ' (Nr-Name)' + ' - ' + str(self.cashflow) + ' - ' + self.comment + ' - ' + self.comment2
 # endregion
 
-# region ###################### Save
+# region Save
 # Definiert eine Zwischenablage zur Speicherung der SUMMEN
 class Save(models.Model):
     nr_save = models.IntegerField(default=0)
@@ -88,7 +88,7 @@ class Save(models.Model):
         return str(self.id) + ' - ' + str(self.nr_save) + ' - ' + str(self.sum_save)
 # endregion
 
-# region ###################### Member Liste
+# region Member Liste
 # Definiert wie ein Member-Eintrag auszusehen hat.
 # Empfehlung color: Google Color picker
 class Members(models.Model):
@@ -101,7 +101,7 @@ class Members(models.Model):
         return str(self.id) + ' - ' + self.name + ' - ' + self.color + ' - ' + str(self.sum)
 # endregion 
 
-# region ###################### Person/Einkauf
+# region Person/Einkauf
 # Definiert wie eine Person einkaufen kann.
 class Person(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)    # Zeitstempel
@@ -121,7 +121,7 @@ class Person(models.Model):
         abstract = True
 # endregion
 
-# region ###################### Warenliste
+# region Warenliste
 
 class Warenliste(models.Model):
     artikelnummer = models.IntegerField(default=0)     # Artikelnummer von Ökoring
@@ -133,8 +133,8 @@ class Warenliste(models.Model):
         return str(self.id) + '-' + str(self.artikelnummer) + ' - ' + self.artikelname + ' - ' + self.sortiment + '-' + self.artikelname_neu
 # endregion
 
-# region ###################### Members
-# region ###################### DB MANIPULATION
+# region Members
+# region DB MANIPULATION
 
 # Datenbank Konfiguration
 # Damit der nachfolgende Code funktional wird und es zu keinen Fehlern bei makemigrations/migrate kommt, muss die 
@@ -178,7 +178,7 @@ name15 = '-'
 # name15 = Members.objects.get(name_nr=15)
 # endregion
 
-# region ###################### Personen/Members
+# region Personen/Members
 # Definiert die personen-Tabellen in der DB. Jede Person hat eine Tabelle.
 class Person1(Person):
     class Meta:
