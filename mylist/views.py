@@ -47,6 +47,54 @@ def finanzdienst(request):
 
     return render(request, 'finanzdienst.html', {})
 
+def sum_and_book_all(request):
+
+    if request.method == 'POST':
+
+        print("Summen verbuchen")
+
+        # Alle Members mit allen Feldern holen
+        members = list(Members.objects.values('name_nr', 'persons', 'name'))
+        print("Alle Members (inkl. Duplikate):")
+        for member in members:
+            print(member)
+
+        # Prüfen, ob name_nr unique ist
+        name_nr_list = [m['name_nr'] for m in members]
+        counter = Counter(name_nr_list)
+        duplicates = [nr for nr, count in counter.items() if count > 1]
+        if duplicates:
+            print(f"Fehler: Die folgenden name_nr-Werte sind nicht eindeutig: {duplicates}")
+        else:
+            print("Alle name_nr-Werte sind eindeutig.")
+
+            # Für jeden Member cashflow berechnen und Konto-Eintrag erstellen
+            for member in members:
+                if member["persons"] == 0:
+                    print(f"Member {member['name']} hat keine Personen, überspringe...")
+                    continue
+                nr = member['name_nr']
+                alle_eintraege = get_person_model(nr).objects.filter(done=False)
+                gesamte_euro_summe = sum(entry.price * entry.amount for entry in alle_eintraege)
+                gesamte_euro_summe = round(gesamte_euro_summe, 2)
+                print(f"Summe: {gesamte_euro_summe}, Name: {member['name']}, Name Nr: {nr}")
+                eintrag = Members.objects.get(name_nr=nr)     # Referenz zur Member-Datenbank
+                eintrag.sum = gesamte_euro_summe                # Summe holen
+                eintrag.save()                                  # Änderungen in Member-Datenbank speichern
+                # Konto-Eintrag erstellen
+                Konto.objects.create(cashflow=gesamte_euro_summe, nr=nr, comment='Koop-Einkauf')
+
+                # Alle Einträge in der Person-Datenbank auf done=True setzen
+                person_model = get_person_model(nr) 
+                instances = person_model.objects.filter(done=False)
+                instances.update(done=True)
+
+                print(f'Koop-Einkauf verbucht für {member['name']} mit {gesamte_euro_summe} Euro.')
+
+            print("Alle Summen wurden erfolgreich verbucht.")
+
+    return render(request, 'finanzdienst.html', {})
+
 def pay_rent(request):
 
     if request.method == 'POST':

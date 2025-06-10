@@ -6,6 +6,7 @@
 - Startserver .bat
 - Pfand Button
 - Änderungen im Artikeltext (typ: Stk/kg jetzt am Ende des Textes)
+- Automatisches Verbuchen der Summen (Finanzdienst)
 
 ### 01.10.2024
 - Kommentare und Kapitel hinzugefügt
