@@ -14,7 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-# region ##################### IMPORT
+# region IMPORT
 from django.contrib import admin
 from django.urls import path
 
@@ -25,6 +25,8 @@ from mylist.views import import_csv
 from mylist.views import konto_add
 from mylist.views import konto_add2
 from mylist.views import finanzdienst
+from mylist.views import pay_rent
+from mylist.views import sum_and_book_all
 
 from mylist.views import Koop_view_price_1
 from mylist.views import Koop_view_price_2
@@ -114,7 +116,9 @@ urlpatterns = [
     path('Testing/add/', Testing_add),
     path('import/', import_csv),
     path('finanzdienst/', finanzdienst),
-
+    path('finanzdienst/pay_rent', pay_rent),
+    path('finanzdienst/sum_and_book_all', sum_and_book_all),
+    
     path('Order/add/', order_add),
 
     path('Konto/add/', konto_add),

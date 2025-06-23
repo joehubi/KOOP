@@ -1,11 +1,10 @@
-# region ###################### IMPORT
 from django.db import models
-#from datetime import datetime 
-# endregion
+import datetime
+from django import forms
+from globals.global_enums import MemberEnum
 
-# region ###################### Preisliste
+# region Preisliste
 # Modell für die Preislisten. Wird noch nicht aktiv verwendet
-
 class PriceList(models.Model):
     name = models.CharField(max_length=200)     # Artikelname
     price = models.FloatField(default=0)        # in €
@@ -35,34 +34,37 @@ class PriceList(models.Model):
         return  str(self.status) + ' - ' + str(self.id) + ' - ' + self.name + ' - ' + str(self.price) + ' - ' + self.type + ' - ' + self.category
 # endregion
 
-# region ###################### Konto
+# region Konto
 # Definiert einen Konto-Eintrag.
 # Die Namensliste zur Bearbeitung in der ADMIN-Ansicht ist hier lokal definiert. Das ist noch ein nachteil im Code.
 
 class Konto(models.Model):
+
     created_at = models.DateTimeField(auto_now_add=True)
+    date = models.DateField(default=datetime.date.today)  # Datum des Eintrags
     nr = models.IntegerField(default=0)
 
-    NAME_CHOICES = (
-        (0, '-'),
-        (1, '[1] Huber/Hoffmann'),
-        (2, '[2] Teßmann'),
-        (3, '[3] Wenninger/Fiedler'),
-        (4, '[4] Sonja Gartner'),
-        (5, '[5] Hildegund & Osi'),
-        (6, '[6] Sarita Schwerla'),
-        (7, '[7] Laux'),
-        (8, '[8] Klaus Plessner'),
-        (9, '[9] -'),
-        (10,'[10] Susanne Zehetmeier'),
-        (11,'[11] Nora Siebels'),
-        (12,'[12] Schürkämper'),
-        (13,'[13] Gabi Mitschka'),
-        (14,'[14] Fritz Spörl'),
+    name_choises = (
+        (0, f"[{MemberEnum.FREI_0.nr}] {MemberEnum.FREI_0.name}"),
+        (1, f"[{MemberEnum.HUBER_HOFFMANN.nr}] {MemberEnum.HUBER_HOFFMANN.name}"),
+        (2, f"[{MemberEnum.TESSMANN.nr}] {MemberEnum.TESSMANN.name}"),
+        (3, f"[{MemberEnum.WENNINGER_FIEDLER.nr}] {MemberEnum.WENNINGER_FIEDLER.name}"),
+        (4, f"[{MemberEnum.SONJA_GARTNER.nr}] {MemberEnum.SONJA_GARTNER.name}"),
+        (5, f"[{MemberEnum.HILDEGUND_OSI.nr}] {MemberEnum.HILDEGUND_OSI.name}"),
+        (6, f"[{MemberEnum.SARITA_SCHWERLA.nr}] {MemberEnum.SARITA_SCHWERLA.name}"),
+        (7, f"[{MemberEnum.LAUX.nr}] {MemberEnum.LAUX.name}"),
+        (8, f"[{MemberEnum.KLAUS_PLESSNER.nr}] {MemberEnum.KLAUS_PLESSNER.name}"),
+        (9, f"[{MemberEnum.KOLLER.nr}] {MemberEnum.KOLLER.name}"),
+        (10, f"[{MemberEnum.SUSANNE_ZEHETMEIER.nr}] {MemberEnum.SUSANNE_ZEHETMEIER.name}"),
+        (11, f"[{MemberEnum.FREI_11.nr}] {MemberEnum.FREI_11.name}"),
+        (12, f"[{MemberEnum.SCHUERKAEMPER.nr}] {MemberEnum.SCHUERKAEMPER.name}"),
+        (13, f"[{MemberEnum.GABI_MITSCHKA.nr}] {MemberEnum.GABI_MITSCHKA.name}"),
+        (14, f"[{MemberEnum.FRITZ_SPOERL.nr}] {MemberEnum.FRITZ_SPOERL.name}"),
+        (15, f"[{MemberEnum.FREI_15.nr}] {MemberEnum.FREI_15.name}"),       
     )
-    
-    nr = models.IntegerField(choices=NAME_CHOICES, default=0)
-    
+
+    nr = models.IntegerField(choices=name_choises, default=0)
+
     cashflow = models.FloatField(default=0)
 
     COMMENT_CHOICES = (
@@ -75,33 +77,46 @@ class Konto(models.Model):
     comment2 = models.CharField(max_length=200, default='-')
 
     def __str__(self):
-        return str(self.id) + ' - ' + str(self.created_at) + ' - ' + str(self.nr) + ' (Nr-Name)' + ' - ' + str(self.cashflow) + ' - ' + self.comment + ' - ' + self.comment2
-# endregion
+        return str(self.id) + ' - ' + str(self.created_at) + ' - ' + str(self.nr) + ' (Nr-Name)' + ' - ' + str(self.cashflow) + ' - ' + str(self.date) + ' - ' + self.comment + ' - ' + self.comment2
 
-# region ###################### Save
+# region KontoForm
+class KontoForm(forms.ModelForm):
+    class Meta:
+        model = Konto
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nr'].choices = [
+            (m.name_nr, m.name) for m in Members.objects.all().order_by('name_nr')
+        ]
+
+# region Save
 # Definiert eine Zwischenablage zur Speicherung der SUMMEN
 class Save(models.Model):
     nr_save = models.IntegerField(default=0)
     sum_save = models.FloatField(default=0)
+    rent_save = models.FloatField(default=16)
 
     def __str__(self):
-        return str(self.id) + ' - ' + str(self.nr_save) + ' - ' + str(self.sum_save)
+        return str(self.id) + ' - ' + str(self.nr_save) + ' - ' + str(self.sum_save) + ' - ' + str(self.rent_save)
 # endregion
 
-# region ###################### Member Liste
+# region Member Liste
 # Definiert wie ein Member-Eintrag auszusehen hat.
 # Empfehlung color: Google Color picker
 class Members(models.Model):
     name    = models.CharField(max_length=200)
     color   = models.CharField(max_length=10)
     sum     = models.FloatField(default=0)
-    name_nr = models.IntegerField(default=0)
+    name_nr = models.IntegerField(default=0, unique=True)  # Nummer des Members, damit es in der DB eindeutig ist
+    persons = models.IntegerField(default=1)  # Anzahl der Personen, die zu diesem Member gehören
 
     def __str__(self):
-        return str(self.id) + ' - ' + self.name + ' - ' + self.color + ' - ' + str(self.sum)
+        return str(self.id) + ' - ' + self.name + '-' + str(self.persons) + ' - ' + self.color + ' - ' + str(self.sum)
 # endregion 
 
-# region ###################### Person/Einkauf
+# region Person/Einkauf
 # Definiert wie eine Person einkaufen kann.
 class Person(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)    # Zeitstempel
@@ -121,7 +136,7 @@ class Person(models.Model):
         abstract = True
 # endregion
 
-# region ###################### Warenliste
+# region Warenliste
 
 class Warenliste(models.Model):
     artikelnummer = models.IntegerField(default=0)     # Artikelnummer von Ökoring
@@ -133,8 +148,8 @@ class Warenliste(models.Model):
         return str(self.id) + '-' + str(self.artikelnummer) + ' - ' + self.artikelname + ' - ' + self.sortiment + '-' + self.artikelname_neu
 # endregion
 
-# region ###################### Members
-# region ###################### DB MANIPULATION
+# region Members
+# region DB MANIPULATION
 
 # Datenbank Konfiguration
 # Damit der nachfolgende Code funktional wird und es zu keinen Fehlern bei makemigrations/migrate kommt, muss die 
@@ -143,42 +158,42 @@ class Warenliste(models.Model):
 
 # Am Anfang bei Einrichtung der Datenbank/Django einkommentieren
 
-name1 = 'Huber/Hoffmann'
-name2 = 'Teßmann'
-name3 = 'Wenninger/Fiedler'
-name4 = 'Sonja Gartner'
-name5 = 'Hildegund & Osi'
-name6 = 'Sarita Schwerla'
-name7 = 'Laux'
-name8 = 'Klaus Plessner'
-name9 = '-'
-name10 = 'Susanne Zehetmeier'
-name11 = 'Nora Siebels'
-name12 = 'Schürkämper'
-name13 = 'Gabi Mitschka'
-name14 = 'Fritz Spörl'
-name15 = '-'
+# name1 = MemberEnum.HUBER_HOFFMANN.name
+# name2 = MemberEnum.TESSMANN.name
+# name3 = MemberEnum.WENNINGER_FIEDLER.name
+# name4 = MemberEnum.SONJA_GARTNER.name
+# name5 = MemberEnum.HILDEGUND_OSI.name
+# name6 = MemberEnum.SARITA_SCHWERLA.name
+# name7 = MemberEnum.LAUX.name
+# name8 = MemberEnum.KLAUS_PLESSNER.name
+# name9 = MemberEnum.KOLLER.name
+# name10 = MemberEnum.SUSANNE_ZEHETMEIER.name
+# name11 = MemberEnum.FREI_11.name
+# name12 = MemberEnum.SCHUERKAEMPER.name
+# name13 = MemberEnum.GABI_MITSCHKA.name
+# name14 = MemberEnum.FRITZ_SPOERL.name
+# name15 = MemberEnum.FREI_15.name
 
 # Am Anfang bei Einrichtung der Datenbank/Django auskommentieren
 # Das ist leider notwendig, da dieser Code zu einem Fehler führt, solange die DB nicht vorhanden ist.
-# name1 = Members.objects.get(id=1)
-# name2 = Members.objects.get(id=2)
-# name3 = Members.objects.get(id=3)
-# name4 = Members.objects.get(id=4)
-# name5 = Members.objects.get(id=5)
-# name6 = Members.objects.get(id=6)
-# name7 = Members.objects.get(id=7)
-# name8 = Members.objects.get(id=8)
-# name9 = Members.objects.get(id=9)
-# name10 = Members.objects.get(id=10)
-# name11 = Members.objects.get(id=11)
-# name12 = Members.objects.get(id=12)
-# name13 = Members.objects.get(id=13)
-# name14 = Members.objects.get(id=14)
-# name15 = Members.objects.get(id=15)
+name1 = Members.objects.get(name_nr=1)
+name2 = Members.objects.get(name_nr=2)
+name3 = Members.objects.get(name_nr=3)
+name4 = Members.objects.get(name_nr=4)
+name5 = Members.objects.get(name_nr=5)
+name6 = Members.objects.get(name_nr=6)
+name7 = Members.objects.get(name_nr=7)
+name8 = Members.objects.get(name_nr=8)
+name9 = Members.objects.get(name_nr=9)
+name10 = Members.objects.get(name_nr=10)
+name11 = Members.objects.get(name_nr=11)
+name12 = Members.objects.get(name_nr=12)
+name13 = Members.objects.get(name_nr=13)
+name14 = Members.objects.get(name_nr=14)
+name15 = Members.objects.get(name_nr=15)
 # endregion
 
-# region ###################### Personen/Members
+# region Personen/Members
 # Definiert die personen-Tabellen in der DB. Jede Person hat eine Tabelle.
 class Person1(Person):
     class Meta:
@@ -270,5 +285,4 @@ class Person15(Person):
         verbose_name = f'[15] {name15}'
         verbose_name_plural =  f'[15] {name15}'
 
-# endregion
 # endregion

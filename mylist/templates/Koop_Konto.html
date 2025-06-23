@@ -37,7 +37,7 @@
         <select id="namenListe" name="namenListe" onchange="Konto_anzeigen()">
             <option value="" selected disabled hidden>Bitte Auswählen</option>
             {% for row in memberdaten %}
-                <option value="{{ row.id }}">{{ row.name }}</option>
+                <option value="{{ row.name_nr }}">{{ row.name }}</option>
             {% endfor %}
         </select>    
     </form>

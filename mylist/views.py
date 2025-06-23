@@ -1,10 +1,11 @@
-# region ###################### IMPORT
+# region IMPORT
 from django.shortcuts import render
 from django.db.models import Sum
 import csv
 from .forms import CSVUploadForm
 import re
 from datetime import datetime
+from collections import Counter
 
 from .models import Person1
 from .models import Person2
@@ -28,12 +29,12 @@ from .models import Konto
 from .models import Save
 # endregion
 
-# region ###################### Definitions
+# region Definitions
 first_person = 1
 last_person = 15
 # endregion
 
-# region ###################### Finanzdienst
+# region Finanzdienst
 def finanzdienst(request):
 
     if request.method == 'POST':
@@ -45,16 +46,99 @@ def finanzdienst(request):
             instances.update(done=True)
 
     return render(request, 'finanzdienst.html', {})
+
+def sum_and_book_all(request):
+
+    if request.method == 'POST':
+
+        print("Summen verbuchen")
+
+        # Alle Members mit allen Feldern holen
+        members = list(Members.objects.values('name_nr', 'persons', 'name'))
+        print("Alle Members (inkl. Duplikate):")
+        for member in members:
+            print(member)
+
+        # Prüfen, ob name_nr unique ist
+        name_nr_list = [m['name_nr'] for m in members]
+        counter = Counter(name_nr_list)
+        duplicates = [nr for nr, count in counter.items() if count > 1]
+        if duplicates:
+            print(f"Fehler: Die folgenden name_nr-Werte sind nicht eindeutig: {duplicates}")
+        else:
+            print("Alle name_nr-Werte sind eindeutig.")
+
+            # Für jeden Member cashflow berechnen und Konto-Eintrag erstellen
+            for member in members:
+                if member["persons"] == 0:
+                    print(f"Member {member['name']} hat keine Personen, überspringe...")
+                    continue
+                nr = member['name_nr']
+                alle_eintraege = get_person_model(nr).objects.filter(done=False)
+                gesamte_euro_summe = sum(entry.price * entry.amount for entry in alle_eintraege)
+                gesamte_euro_summe = round(gesamte_euro_summe, 2)
+                print(f"Summe: {gesamte_euro_summe}, Name: {member['name']}, Name Nr: {nr}")
+                eintrag = Members.objects.get(name_nr=nr)     # Referenz zur Member-Datenbank
+                eintrag.sum = gesamte_euro_summe                # Summe holen
+                eintrag.save()                                  # Änderungen in Member-Datenbank speichern
+                # Konto-Eintrag erstellen
+                Konto.objects.create(cashflow=-1*gesamte_euro_summe, nr=nr, comment='Koop-Einkauf')
+
+                # Alle Einträge in der Person-Datenbank auf done=True setzen
+                person_model = get_person_model(nr) 
+                instances = person_model.objects.filter(done=False)
+                instances.update(done=True)
+
+                print(f'Koop-Einkauf verbucht für {member['name']} mit {gesamte_euro_summe} Euro.')
+
+            print("Alle Summen wurden erfolgreich verbucht.")
+
+    return render(request, 'finanzdienst.html', {})
+
+def pay_rent(request):
+
+    if request.method == 'POST':
+        print("Miete abbuchen")
+
+        # Miete auslesen
+        save_object = Save.objects.get(id=1)
+        miete = save_object.rent_save
+        print(f"Miete ({miete} €) pro Person abbuchen")
+
+        # Alle Members mit allen Feldern holen
+        members = list(Members.objects.values('name_nr', 'persons'))
+        print("Alle Members (inkl. Duplikate):", members)
+
+        # Prüfen, ob name_nr unique ist
+        name_nr_list = [m['name_nr'] for m in members]
+        counter = Counter(name_nr_list)
+        duplicates = [nr for nr, count in counter.items() if count > 1]
+        if duplicates:
+            print(f"Fehler: Die folgenden name_nr-Werte sind nicht eindeutig: {duplicates}")
+        else:
+            print("Alle name_nr-Werte sind eindeutig.")
+
+            # Für jeden Member cashflow berechnen und Konto-Eintrag erstellen
+            for member in members:
+                nr = member['name_nr']
+                persons = member['persons']
+                miete_total_persons = miete * persons
+                print(f'Miete abbuchen für: {nr} ({persons} Personen, cashflow={miete_total_persons})')
+                Konto.objects.create(cashflow=(-miete_total_persons), nr=nr, comment='Miete')
+            print("Alle Miete-Einträge wurden erfolgreich erstellt.")
+
+    return render(request, 'finanzdienst.html', {})
 # endregion
 
-# region ###################### CSV Import
+# region CSV Import
 def convert_date_format(date_str):
     try:
         # Konvertiere das Datum vom Format 'TT.MM.JJJJ' zu 'YYYY-MM-DD'
         return datetime.strptime(date_str, '%d.%m.%Y').strftime('%Y-%m-%d')
     except ValueError:
         # Falls das Datum nicht im erwarteten Format ist, Fehler ausgeben
-        raise ValidationError(f'{date_str} has an invalid format. Please use DD.MM.YYYY format.')
+        print(f'{date_str} has an invalid format. Please use DD.MM.YYYY format.')
+        raise Exception(f'Invalid date format: {date_str}')
 
 def import_csv(request):
 
@@ -84,6 +168,7 @@ def import_csv(request):
                     price = row_value[3],
                     type = row_value[4],
                     delivery_date = row_value[5],
+                    status = row_value[6],
                 )
 
     else:
@@ -92,7 +177,7 @@ def import_csv(request):
     return render(request, 'import_csv.html', {'form': form, 'daten1': daten1, 'daten2': daten2})
 # endregion
 
-# region ###################### Konto
+# region Konto
 # Hier werden Konto-Buchungen definiert. So können Koop-Einzahlungen, Miete etc. erfasst werden. 
 def konto_add(request):
 
@@ -142,7 +227,7 @@ def konto_add2(request):
     return render(request, 'Koop_konto.html', {'all_items': all_items, 'all_saves': all_Saves})
 # endregion
 
-# region ###################### Einkauf/Person 
+# region Einkauf/Person 
 # Hier wird definiert welche Ansichten und Funktionen für einen Einkauf (Person X) zur Verfügung stehen
 
 # Artikel hinzufügen/einkaufen
@@ -172,13 +257,27 @@ def add_person(request, person_id):
     preise_getraenke    = PriceList.objects.filter(category="Getränke", status=True).order_by('name')
     preise_tiefkuehl    = PriceList.objects.filter(category="Tiefkühl", status=True).order_by('name')
 
-    member = Members.objects.get(id=person_id)
+    #member = Members.objects.get(id=person_id)
+    member = Members.objects.get(name_nr=person_id)
     page_membername = member.name   # Übergibt die Werte an die HTML
     page_color = member.color       # Übergibt die Werte an die HTML
     page_sum = member.sum           # Übergibt die Werte an die HTML
     Nr_id = person_id               # Übergibt die Werte an die HTML
+    page_persons = member.persons
 
-    return render(request, f'koop_{person_id}.html', {'all_items': all_items, 'all_members': all_members, 'page_membername': page_membername, 'page_color': page_color, 'page_sum': page_sum, 'Nr_id': Nr_id, 'preise_frischware': preise_frischware, 'preise_obst': preise_obst, 'preise_gemuese': preise_gemuese, 'preise_fleisch': preise_fleisch, 'preise_getraenke': preise_getraenke, 'preise_tiefkuehl': preise_tiefkuehl})
+    return render(request, f'koop_{person_id}.html',
+                  {'all_items': all_items,
+                    'all_members': all_members,
+                    'page_membername': page_membername,
+                    'page_persons': page_persons,
+                    'page_color': page_color,
+                    'page_sum': page_sum,
+                    'Nr_id': Nr_id, 'preise_frischware': preise_frischware,
+                    'preise_obst': preise_obst,
+                    'preise_gemuese': preise_gemuese,
+                    'preise_fleisch': preise_fleisch,
+                    'preise_getraenke': preise_getraenke,
+                    'preise_tiefkuehl': preise_tiefkuehl})
 
 # Löschen eines Einkaufs/Artikels aus der Liste
 def delete_person(request, person_id):
@@ -197,15 +296,15 @@ def sum_person(request, person_id):
         gesamte_euro_summe = sum(entry.price * entry.amount for entry in alle_eintraege)
         gesamte_euro_summe = round(gesamte_euro_summe, 2)
         print('Summe:', gesamte_euro_summe)
-        eintrag = Members.objects.get(id=person_id)     # Referenz zur Member-Datenbank
+        eintrag = Members.objects.get(name_nr=person_id)     # Referenz zur Member-Datenbank
         eintrag.sum = gesamte_euro_summe                # Summe holen
         eintrag.save()                                  # Änderungen in Member-Datenbank speichern
 
     return render(request, f'koop_{person_id}.html')
 # endregion
 
-# region ###################### Aufruf der Funktionen für einen Einkauf
-# region ###################### Funktion zum Zuordnen der Namen
+# region Aufruf der Funktionen für einen Einkauf
+# region Funktion zum Zuordnen der Namen
 def get_person_model(person_id):
     # Hier können Sie die Zuordnung zwischen Personen-ID und Datenbankmodell implementieren
     # Zum Beispiel: Person 1 -> Person1, Person 2 -> Person2 usw.
@@ -246,7 +345,7 @@ def get_person_model(person_id):
         # Wenn keine Übereinstimmung gefunden wird, können Sie eine Ausnahme auslösen oder ein Standardmodell zurückgeben
         raise ValueError("Ungültige Personen-ID")
 # endregion
-# region ###################### Funktion für View erstellen
+# region Funktion für View erstellen
 # Definiert einen View für jede Person
 def Person_1_add(request):
     return add_person(request, 1)
@@ -385,7 +484,7 @@ def Person_15_sum(request):
 # endregion
 # endregion
 
-# region ###################### !!!NICHT AKTIV!!! Bestellungen
+# region !!!NICHT AKTIV!!! Bestellungen
 # Noch in der Testphase
 def order_add(request):
 
@@ -429,7 +528,7 @@ def order_add(request):
     return render(request, 'Koop_Order.html', {'all_items': ActItems, 'all_saves': all_Saves})
 
 # endregion
-# region ###################### !!!NICHT AKTIV!!! Preisliste
+# region !!!NICHT AKTIV!!! Preisliste
 def Koop_view_price_1(request):
     all_items = PriceList.objects.filter(category='Sonstige')
     all_items = all_items.order_by('name')
@@ -455,7 +554,7 @@ def Koop_view_price_5(request):
     all_items = all_items.order_by('category', 'name')
     return render(request, 'koop_price_5.html', {'all_items': all_items})
 # endregion
-# region ###################### !!!NICHT AKTIV!!! Personen
+# region !!!NICHT AKTIV!!! Personen
 def add_person_smart(request, person_id):
     if request.method == 'POST':
         entry = PriceList.objects.get(id=request.POST['itemNumber'])
@@ -469,7 +568,7 @@ def add_person_smart(request, person_id):
     
     return render(request, f'koop_{person_id}.html')
 #endregion
-# region ###################### Debugging/Testing
+# region Debugging/Testing
 # just for testing
 def Testing_add(request):
     if request.method == 'POST':

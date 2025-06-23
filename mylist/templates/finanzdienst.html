@@ -23,24 +23,65 @@
 
     {% load static %}
     <img src="{% static 'finanzdienst.jpg' %}" alt="Finanzdienst">
-  
+
+    <header>
+        <h1>Prozess Finanzdienst</h1>
+        <div style="margin-left: auto; padding-right: 12px;">
+        </div>
+    </header>
     <br><br>
-    
+    <div style="text-indent:10px;">1. PDF Übersicht drucken</div>    
+    <div style="text-indent:10px;">2. Summen in Konto verbuchen (Button)</div>
+    <div style="text-indent:10px;">3. Miete auf Konto verbuchen (Button) - nur einmal am Anfang des Monats</div>
+    <div style="text-indent:10px;">4. Einzahlungen auf Konto buchen (manueller Prozess)</div>
+    <br>
+
+    <header>
+        <h1>Alle Summen verbuchen</h1>
+        <div style="margin-left: auto; padding-right: 12px;">
+        </div>
+    </header>
+    <br><br>
+    <button onclick="sum_and_book_all()">Alle Summen verbuchen</button>&nbsp;&nbsp;
+    <br><br>
+    <div style="text-indent:10px;">Was passiert nach "Alle Summen verbuchen"?</div>
+    <div style="text-indent:20px;">1. Alle aktuellen Summen der Einkaufslisten werden in die Kontos verbucht</div>
+    <div style="text-indent:20px;">2. Die Einkaufslisten werden geleert ("Alle Artikel abrechnen")</div>
+    <br>
+
+    <header>
+        <h1>Miete auf Kontos buchen<h1>
+        <div style="margin-left: auto; padding-right: 12px;">
+        </div>
+    </header>
+    <br><br>
+    <button onclick="pay_rent()">Miete abbuchen</button>&nbsp;&nbsp;
+    <div style="text-indent:10px;">Die Miete sollte beim ersten Finanzdienst eines Monats abgerechnet werden</div>
+    <br><br>
+    <div style="text-indent:10px;">Was passiert nach "Miete abbuchen"?</div>
+    <div style="text-indent:20px;">1. Jede Person erhält eine Negativbuchung zur Miete</div>
+    <div style="text-indent:20px;">2. Personenanzahl ist in Member-Informationen hinterlegt</div>
+    <br>
+
+    <header>
+        <h1>Alle Artikel abrechnen (OPTIONAL)</h1>
+        <div style="margin-left: auto; padding-right: 12px;">
+        </div>
+    </header>
+    Wird im Regelfall nicht benötigt, da die Artikel bereits bei "Alle Summen verbuchen" aus der aktuellen Einkaufsliste entfernt werden<br>
+    <br><br>
     <button onclick="book_all()">Alle abrechnen</button>&nbsp;&nbsp;
     <br><br>
-    <div style="text-indent:10px;">Was passiert nach "alle abrechnen":</div>
+    <div style="text-indent:10px;">Was passiert nach "alle abrechnen"?</div>
     <div style="text-indent:20px;">1. Kein Artikel wird gelöscht</div>
     <div style="text-indent:20px;">2. Alle Artikel aller Personen verschwinden aus der aktiven Ansicht</div>
     <div style="text-indent:20px;">3. Die aktuelle Waren-Summe aller Personen ist damit NULL</div>
-    <div style="text-indent:20px;">4. Kategorie/Sortiment in</div>
     <br>
 
     <script>
         let token = '{{ csrf_token }}';
 
         function book_all() {
-            // console.log("Hello World");
-            
             // Zeigt eine Bestätigungsabfrage an
             const userConfirmed = confirm("Wollen Sie wirklich fortfahren?");
 
@@ -53,6 +94,44 @@
                         body: formData
                 });
                 alert("Alle Einkäufe wurden als 'ABGERECHNET' gebucht");
+            } else {
+                alert("Sie haben auf Abbrechen geklickt");
+            }
+
+        }
+
+        function pay_rent() {
+            // Zeigt eine Bestätigungsabfrage an
+            const userConfirmed = confirm("Wollen Sie wirklich fortfahren?");
+
+            if (userConfirmed) {
+                let formData = new FormData();
+                formData.append('csrfmiddlewaretoken', token);
+
+                fetch(('/finanzdienst/pay_rent'),{
+                        method: 'POST',
+                        body: formData
+                });
+                alert("Miete wurde abgebucht");
+            } else {
+                alert("Sie haben auf Abbrechen geklickt");
+            }
+
+        }
+
+        function sum_and_book_all() {
+            // Zeigt eine Bestätigungsabfrage an
+            const userConfirmed = confirm("Wollen Sie wirklich fortfahren?");
+
+            if (userConfirmed) {
+                let formData = new FormData();
+                formData.append('csrfmiddlewaretoken', token);
+
+                fetch(('/finanzdienst/sum_and_book_all'),{
+                        method: 'POST',
+                        body: formData
+                });
+                alert("Summen wurden verbucht");
             } else {
                 alert("Sie haben auf Abbrechen geklickt");
             }

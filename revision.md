@@ -1,35 +1,45 @@
-01.10.2024
+### 08.06.2025
+- HTML mit Klonen-Skript
+- Enums für Memberinformationen
+- Personenanzahl in Datenbank (bei Members)
+- Miete in Datenbank (Save-Objekt)
+- Startserver .bat
+- Pfand Button
+- Änderungen im Artikeltext (typ: Stk/kg jetzt am Ende des Textes)
+- Automatisches Verbuchen der Summen (Finanzdienst)
+
+### 01.10.2024
 - Kommentare und Kapitel hinzugefügt
 - Revisionierung jetzt auf github (https://github.com/joehubi/KOOP.git)
 
-17.03.2024
+### 17.03.2024
 - HTML ffür Bestellungen erstellt
 
-29.01.2024
+### 29.01.2024
 - Kontokarteneinträge werden jetzt nach Datum sortiert
 - Namen der Models in der Adminseite auf Memeber-Name gesetzt
 
-23.01.2024
+### 23.01.2024
 - Alle HTMLs (Personen) sind jetzt identisch
 - Einkäufe müssen nicht mehr aus der Datenbank gelöscht werden, sondern werden nur noch "unsichtbar" gemacht
 
-07.01.2023
+### 07.01.2023
 - Fehler bei Saritas Karte (Nr.6) bzgl. 3-Nachkommastellen bei Gewicht korrigiert
 - Design Kontoansicht verbessert
 
-02.01.2023
+### 02.01.2023
 - Kontokarte mit den aktuellen Mitgliedernamen angelegt
 
-23.12.2023
+### 23.12.2023
 - Es wird jetzt ein Zeit und Datumsstempel in der Einkaufsliste erzeugt (vorher nur Datumsstempel)
 
-07.11.2023
+### 07.11.2023
 - Summenaktualisierung verbessert
 
-01.11.2023
+### 01.11.2023
 - Einkaufsliste für 15 Mitglieder (vorher 10) erweitert
 
-18.10.2023
+### 18.10.2023
 - Einkaufsliste wird jetzt nach der id absteigend angeordnet
 - Einkaufsliste Breite auf width=80% geändert (Ansicht im Browser)
 

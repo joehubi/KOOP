@@ -1,4 +1,3 @@
-
 {% load static %}
 
 <!DOCTYPE html>
@@ -34,31 +33,95 @@
         &nbsp;
         {{ page_membername }} 
         &nbsp;
+        - {{ page_persons }} Personen 
+        &nbsp;
         (Summe: {{ page_sum }} €)
         </h1>
     </header>
 
-<form onsubmit="eingabe_return(); return false;">
-    &nbsp;&nbsp;
-    <label for="artikel_manual">Artikel</label>
-    <input type="text" id="artikel_manual" name="textfeld" maxlength="200">
-    &nbsp;&nbsp;&nbsp;
-    <label for="stk_kg_manual">Menge in kg/Stk:</label>
-    <input type="number" id="stk_kg_manual" name="stk_kg" step="0.001" min="0" required>
-    &nbsp;&nbsp;&nbsp;
-    <label for="preis_manual">Preis in €:</label>
-    <input type="number" id="preis_manual" name="stk_kg" step="0.01" min="-100" required>
-
-    <input type="submit" class="unvisible">
-</form>
-
-    &nbsp;&nbsp;&nbsp;
-
-    <button onclick="hinzufuegen()">Hinzufügen</button>
-    <button onclick="loeschen()">Löschen</button>
-    <button onclick="Summe()">Summe</button>
+    <form>
+        <br>
+        &nbsp;
+        <label for="sel_frischware">Frischware</label>
+        &nbsp;
+        <select id="sel_frischware" name="sel_frischware" onchange="Wert_aus_Preisliste_holen('sel_frischware')">
+            <option value="" selected disabled hidden>Bitte Auswählen</option>
+            {% for row in preise_frischware %}
+                <option value="{{ row.price }}">{{ row.name }} - {{ row.price }} € - [{{ row.type }}]</option>
+            {% endfor %}
+        </select>    
+        <br>
+        &nbsp;
+        <label for="sel_gemuese">Gemüse</label>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <select id="sel_gemuese" name="sel_gemuese" onchange="Wert_aus_Preisliste_holen('sel_gemuese')">
+            <option value="" selected disabled hidden>Bitte Auswählen</option>
+            {% for row in preise_gemuese %}
+                <option value="{{ row.price }}">{{ row.name }} - {{ row.price }} € - [{{ row.type }}]</option>
+            {% endfor %}
+        </select>  
+        <br>
+        &nbsp;
+        <label for="sel_obst">Obst</label>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <select id="sel_obst" name="sel_obst" onchange="Wert_aus_Preisliste_holen('sel_obst')">
+            <option value="" selected disabled hidden>Bitte Auswählen</option>
+            {% for row in preise_obst %}
+                <option value="{{ row.price }}">{{ row.name }} - {{ row.price }} € - [{{ row.type }}]</option>
+            {% endfor %}
+        </select>  
+        <br>  
+        &nbsp;
+        <label for="sel_fleisch">Fleisch</label>&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <select id="sel_fleisch" name="sel_fleisch" onchange="Wert_aus_Preisliste_holen('sel_fleisch')">
+            <option value="" selected disabled hidden>Bitte Auswählen</option>
+            {% for row in preise_fleisch %}
+                <option value="{{ row.price }}">{{ row.name }} - {{ row.price }} € - [{{ row.type }}]</option>
+            {% endfor %}
+        </select>    
+        <br>
+        &nbsp;
+        <label for="sel_getraenke">Getränke</label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <select id="sel_getraenke" name="sel_getraenke" onchange="Wert_aus_Preisliste_holen('sel_getraenke')">
+            <option value="" selected disabled hidden>Bitte Auswählen</option>
+            {% for row in preise_getraenke %}
+                <option value="{{ row.price }}">{{ row.name }} - {{ row.price }} € - [{{ row.type }}]</option>
+            {% endfor %}
+        </select>
+        <br>  
+        &nbsp;
+        <label for="sel_tiefkuehl">Tiefkühl</label>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <select id="sel_tiefkuehl" name="sel_tiefkuehl" onchange="Wert_aus_Preisliste_holen('sel_tiefkuehl')">
+            <option value="" selected disabled hidden>Bitte Auswählen</option>
+            {% for row in preise_tiefkuehl %}
+                <option value="{{ row.price }}">{{ row.name }} - {{ row.price }} € - [{{ row.type }}]</option>
+            {% endfor %}
+        </select>     
+    </form>
+    <hr>
+    <form onsubmit="eingabe_return(); return false;">
+        &nbsp;&nbsp;
+        <label for="artikel_manual">Artikel</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" id="artikel_manual" name="textfeld" maxlength="200">
+        &nbsp;&nbsp;&nbsp;
+        <label for="stk_kg_manual">Menge in kg/Stk:</label>
+        <input type="number" id="stk_kg_manual" name="stk_kg" step="0.001" min="0" required>
+        &nbsp;&nbsp;&nbsp;
+        <label for="preis_manual">Preis in €:</label>
+        <input type="number" id="preis_manual" name="stk_kg" step="0.01" min="-100" required>
+        <input type="submit" class="unvisible">
+    </form>
     <br>
-
+    <div style="text-indent:125px;">
+        <button onclick="hinzufuegen()">Hinzufügen</button>&nbsp;&nbsp;
+        <button onclick="loeschen()">Löschen</button>&nbsp;&nbsp;
+        <button onclick="Summe()">Summe</button>&nbsp;&nbsp;
+        <button onclick="pfand()">Pfand</button>
+    </div>
+    <hr>
     <table id="einkaufsliste">
         <thead>
             <tr>
@@ -71,8 +134,9 @@
         </thead>
 
         {% for row in all_items %}
-
+        
             <tbody>
+
                 <tr>
                     <td>{{ row.id }}</td>
                     <td>{{ row.created_at }}</td>
@@ -144,6 +208,30 @@
             document.title = dateStamp + membername;
         }
 
+        function Wert_aus_Preisliste_holen(Selektor) {
+            var selectedIndex = document.getElementById(Selektor).selectedIndex;
+            var ausgewaehlterText = document.getElementById(Selektor).options[selectedIndex].text;
+            let string1 = ausgewaehlterText.split(" - ");   // String aufteilen (um Artikelname zu erhalten)
+            let string2 = string1[1].split(" €");           // String aufteilen (um Preis in € zu erhalten)
+            console.log(string1[0]); // Debugging
+            console.log(string2[0]); // Debugging
+
+            // Extrahiere den Text zwischen [ und ]
+            var match = ausgewaehlterText.match(/\[([^\]]+)\]/);
+            var typ = match ? match[1] : "";
+            console.log(typ);
+
+            document.getElementById("artikel_manual").value = string1[0] + " [" + typ + "]";   // Artikelname schreiben in Eingabe-Element
+            document.getElementById("preis_manual").value = string2[0];     // Preis in Eingabeelement schreiben
+
+            document.getElementById("stk_kg_manual").focus();   // Um die Benutzereingabe zu erleichtern, wird nach dem Auswählen eines Artikels das Mengen-Feld in den Fokus gesetzt
+        }
+
+        function pfand() {
+            document.getElementById("artikel_manual").value = "Pfand";
+            document.getElementById("preis_manual").value = "-0.15";
+            document.getElementById("stk_kg_manual").focus();
+        }
     </script>
 
 </body>

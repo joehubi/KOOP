@@ -1,4 +1,4 @@
-# region ############# Import
+# region   Import
 from django.contrib import admin
 
 from .models import PriceList
@@ -52,7 +52,7 @@ def DELETE(modeladmin, request, queryset):
     queryset.delete()
 DELETE.short_description = "LÖSCHEN"
 
-# region ################## Klassen
+# region Klassen
 class Person1Admin(admin.ModelAdmin):
     actions = [DONE_TRUE, DONE_FALSE]
     list_display = ('id', 'done', 'created_at', 'name', 'amount','price')
@@ -100,7 +100,7 @@ class Person15Admin(admin.ModelAdmin):
     list_display = ('id', 'done', 'created_at', 'name', 'amount','price')
 
 class KontoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nr', 'created_at', 'cashflow', 'comment','comment2')
+    list_display = ('id', 'nr', 'created_at', 'cashflow', 'date', 'comment','comment2')
 
 class WarenlisteAdmin(admin.ModelAdmin):
     list_display = ('id', 'artikelnummer', 'artikelname', 'sortiment', 'artikelname_neu')
@@ -110,10 +110,10 @@ class PriceListAdmin(admin.ModelAdmin):
     list_display = ('id','article_number' ,'delivery_date', 'status', 'name', 'price', 'type', 'category', 'created_at')
 
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name_nr', 'name', 'color', 'sum')
+    list_display = ('id', 'name_nr', 'name', 'persons', 'color', 'sum')
 # endregion
 
-# region ################# Register models
+# region Register models
 admin.site.register(PriceList, PriceListAdmin)
 admin.site.register(Members, MemberAdmin)
 admin.site.register(Konto, KontoAdmin)
