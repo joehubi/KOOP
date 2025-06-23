@@ -82,7 +82,7 @@ def sum_and_book_all(request):
                 eintrag.sum = gesamte_euro_summe                # Summe holen
                 eintrag.save()                                  # Änderungen in Member-Datenbank speichern
                 # Konto-Eintrag erstellen
-                Konto.objects.create(cashflow=gesamte_euro_summe, nr=nr, comment='Koop-Einkauf')
+                Konto.objects.create(cashflow=-1*gesamte_euro_summe, nr=nr, comment='Koop-Einkauf')
 
                 # Alle Einträge in der Person-Datenbank auf done=True setzen
                 person_model = get_person_model(nr) 
