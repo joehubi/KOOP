@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=KOOP Django Server
+Exec=lxterminal -e "/home/user/Koop/KOOP/start_django.sh"
+Icon=utilities-terminal
+Terminal=true
