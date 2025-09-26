@@ -1,8 +1,7 @@
-# Inhalt des Shell-Skript (start)
 #!/bin/bash
 
 # ins Projektverzeichnis wechseln
-cd /home/user/Koop/KOOP-main
+cd /home/user/Koop/KOOP
 
 # venv aktivieren
 source venv/bin/activate
