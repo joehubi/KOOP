@@ -47,7 +47,7 @@ Inhalt:
         python manage.py runserver 0.0.0.0:8000
         Speichern: CTRL+O → Enter → CTRL+X
 
-Ausführbar machen:
+### Ausführbar machen:
         chmod +x /home/user/Koop/KOOP-main/start_django.sh
 
 Schritt 2: Desktop-Verknüpfung
