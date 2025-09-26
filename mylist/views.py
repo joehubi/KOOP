@@ -89,7 +89,7 @@ def sum_and_book_all(request):
                 instances = person_model.objects.filter(done=False)
                 instances.update(done=True)
 
-                print(f'Koop-Einkauf verbucht für {member['name']} mit {gesamte_euro_summe} Euro.')
+                print(f"Koop-Einkauf verbucht für {member['name']} mit {gesamte_euro_summe} Euro.")
 
             print("Alle Summen wurden erfolgreich verbucht.")
 
