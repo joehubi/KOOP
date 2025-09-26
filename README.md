@@ -5,16 +5,18 @@
 1. Environment erstellen lassen
         python -m venv venv  
 2. Environment aktivieren
-        "./venv/Scripts/activate"
-3. Django installieren
+           Windows: "./venv/Scripts/activate"
+           Linux: source venv/bin/activate
+4. Django installieren
         pip install Django
-4. Aus den Models den SQL Code erstellen
-        python manage.py makemigrations
-5. SQL auf der Datenbank ausführen
+5. Aus den Models den SQL Code erstellen
+   python manage.py makemigrations
+   Vorher die sqlite3 Datenbankdatei ins Verzeichnis kopieren        
+7. SQL auf der Datenbank ausführen
         python manage.py migrate
-6. User im Admin-Bereich anlegen
+8. User im Admin-Bereich anlegen
         python manage.py createsuperuser
-7. Server starten
+9. Server starten
         python manage.py runserver
 
 
