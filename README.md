@@ -22,7 +22,46 @@
 
 ## HTML
 
-Alle HTML Koop_1.html bis Koop_15.html sind identisch!!!!
+Alle HTML müssen initialisiert / erstellt werden mit dem Skript create_html_clones.py im Ordner HTML
+
+## Runserver Startdatei unter Linux
+
+Dein Projektordner: /home/user/Koop/KOOP-main
+Dein venv: /home/user/Koop/KOOP-main/venv
+Deine manage.py: /home/user/Koop/KOOP-main/manage.py
+
+Schritt 1: Shell-Skript (start_django.sh)
+nano /home/user/Koop/KOOP-main/start_django.sh
+
+Inhalt:
+#!/bin/bash
+
+# ins Projektverzeichnis wechseln
+cd /home/user/Koop/KOOP-main
+
+# venv aktivieren
+source venv/bin/activate
+
+# Django Server starten
+python manage.py runserver 0.0.0.0:8000
+Speichern: CTRL+O → Enter → CTRL+X
+
+Ausführbar machen:
+chmod +x /home/user/Koop/KOOP-main/start_django.sh
+
+Schritt 2: Desktop-Verknüpfung
+nano ~/Desktop/KOOP-server.desktop
+
+Inhalt:
+[Desktop Entry]
+Type=Application
+Name=KOOP Django Server
+Exec=lxterminal -e "/home/user/Koop/KOOP-main/start_django.sh"
+Icon=utilities-terminal
+Terminal=true
+
+Speichern und ausführbar machen:
+chmod +x ~/Desktop/KOOP-server.desktop
 
 ## Allgemein Django Projekt erstellen
 
