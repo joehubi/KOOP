@@ -1,6 +1,4 @@
-# KOOP
-
-## Installation
+# Installation
 
 1. Environment erstellen lassen
         python -m venv venv  
@@ -20,21 +18,21 @@
         python manage.py runserver
 
 
-## HTML
+# HTML
 
 Alle HTML müssen initialisiert / erstellt werden mit dem Skript create_html_clones.py im Ordner HTML
 
-## Runserver Startdatei unter Linux
+# Runserver Startdatei unter Linux
 
 Beispiel:
-Projektordner: /home/user/Koop/KOOP-main
-venv: /home/user/Koop/KOOP-main/venv
-manage.py: /home/user/Koop/KOOP-main/manage.py
+* Projektordner: /home/user/Koop/KOOP-main
+* venv: /home/user/Koop/KOOP-main/venv
+* manage.py: /home/user/Koop/KOOP-main/manage.py
 
-Schritt 1: Shell-Skript (start_django.sh)
-nano /home/user/Koop/KOOP-main/start_django.sh
+## Schritt 1: Shell-Skript (start_django.sh)
+        nano /home/user/Koop/KOOP-main/start_django.sh
 
-Inhalt:
+### Inhalt des Shell-Skript (start)
         #!/bin/bash
 
 ### ins Projektverzeichnis wechseln
@@ -47,13 +45,15 @@ Inhalt:
         python manage.py runserver 0.0.0.0:8000
         Speichern: CTRL+O → Enter → CTRL+X
 
+### Inhalt des Shell-Skript (ende)
+
 ### Ausführbar machen:
         chmod +x /home/user/Koop/KOOP-main/start_django.sh
 
-Schritt 2: Desktop-Verknüpfung
+## Schritt 2: Desktop-Verknüpfung erstellen
         nano ~/Desktop/KOOP-server.desktop
 
-Inhalt:
+### Inhalt:
         [Desktop Entry]
         Type=Application
         Name=KOOP Django Server
@@ -61,10 +61,10 @@ Inhalt:
         Icon=utilities-terminal
         Terminal=true
 
-Speichern und ausführbar machen:
+### Speichern und ausführbar machen:
         chmod +x ~/Desktop/KOOP-server.desktop
 
-## Allgemein Django Projekt erstellen
+# Allgemein Django Projekt erstellen
 
 1. Django installieren:             python -m pip install Django
 2. Projekt "shopping_list" starten  
