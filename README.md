@@ -30,19 +30,11 @@ Beispiel:
 * venv: /home/user/Koop/KOOP/venv
 * manage.py: /home/user/Koop/KOOP/manage.py
 
-## Ausführbar machen:
+## Ausführbar machen unter Linux:
         chmod +x /home/user/Koop/KOOP/start_django.sh
 
 ## Schritt 2: Desktop-Verknüpfung erstellen
-        nano ~/Desktop/KOOP-server.desktop
-
-### Inhalt:
-        [Desktop Entry]
-        Type=Application
-        Name=KOOP Django Server
-        Exec=lxterminal -e "/home/user/Koop/KOOP-main/start_django.sh"
-        Icon=utilities-terminal
-        Terminal=true
+Datei "KOOP-server.desktop" aus Verzeichnis auf Desktop kopieren 
 
 ### Speichern und ausführbar machen:
         chmod +x ~/Desktop/KOOP-server.desktop
