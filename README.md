@@ -22,6 +22,9 @@ git clone "dieses Repo"
 9. Server starten
 * python manage.py runserver
 
+# Django Benutzer anlegen
+python manage.py createsuperuser
+   
 
 # Runserver Startdatei unter Linux
 
